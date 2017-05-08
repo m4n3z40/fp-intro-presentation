@@ -1,22 +1,22 @@
 {
-  "name": "reveal.js",
-  "version": "3.5.0",
+  "name": "fp-intro-presentation",
+  "version": "0.0.1",
   "main": [
     "js/reveal.js",
     "css/reveal.css"
   ],
-  "homepage": "http://lab.hakim.se/reveal-js/",
-  "license": "MIT",
-  "description": "The HTML Presentation Framework",
+  "homepage": "https://m4n3z40.github.io/fp-intro-presentation",
+  "license": "CC-BY",
+  "description": "A presentation to introduce basic concepts of function programming with javascript",
   "authors": [
-    "Hakim El Hattab <hakim.elhattab@gmail.com>"
+    "Allan Marques Baptista <allan.marques@ymail.com>"
   ],
   "dependencies": {
     "headjs": "~1.0.3"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/hakimel/reveal.js.git"
+    "url": "git://github.com/m4n3z40/fp-intro-presentation.git"
   },
   "ignore": [
     "**/.*",

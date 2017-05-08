@@ -1,9 +1,8 @@
 {
-  "name": "reveal.js",
-  "version": "3.5.0",
-  "description": "The HTML Presentation Framework",
-  "homepage": "http://lab.hakim.se/reveal-js",
-  "subdomain": "revealjs",
+  "name": "fp-intro-presentation",
+  "version": "0.0.1",
+  "description": "A presentation to introduce basic concepts of function programming with javascript",
+  "homepage": "https://m4n3z40.github.io/fp-intro-presentation",
   "main": "js/reveal.js",
   "scripts": {
     "test": "grunt test",
@@ -11,13 +10,13 @@
     "build": "grunt"
   },
   "author": {
-    "name": "Hakim El Hattab",
-    "email": "hakim.elhattab@gmail.com",
-    "web": "http://hakim.se"
+    "name": "Allan Marques Baptista",
+    "email": "allan.marques@ymail.com",
+    "web": "https://www.linkedin.com/in/allanbaptista"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/hakimel/reveal.js.git"
+    "url": "git://github.com/m4n3z40/fp-intro-presentation.git"
   },
   "engines": {
     "node": ">=4.0.0"
@@ -40,5 +39,5 @@
     "node-sass": "~3.13.0",
     "socket.io": "^1.4.8"
   },
-  "license": "MIT"
+  "license": "CC-BY"
 }
