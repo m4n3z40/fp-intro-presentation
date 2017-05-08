@@ -9,6 +9,7 @@ A presentation to introduce basic concepts of function programming with javascri
 ### License & Copyright
 
 ![Creative Commons Attribution 4.0 International License](https://licensebuttons.net/l/by/3.0/88x31.png)
+
 Presentation (c) by Allan Marques Baptista
 
 Presentation is licensed under a
