@@ -1,329 +1,624 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Functional Programming: An Introduction</title>
+    <title>Functional Programming: An Introduction</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>
-					<h1>Introduction to FP</h1>
-					<h2>(w/ Javascript)</h2>
-				</section>
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1>Introduction to FP</h1>
+          <h2>(w/ Javascript)</h2>
+        </section>
 
-				<section>
-					<blockquote>
-						"A monad is just a monoid in the category of endofunctors, what's the problem?"
-					</blockquote>
-					<p>- Functional Programmer, Asshole</p>
-				</section>
-				
-				<section>
-					<img src="img/james-iry-about-fpers.png" alt="">
-				</section>
-				
-				<section>
-					<h3>Why to FP?</h3>
-				</section>
-				
-				<section>
-					<h3>But First, some facts</h3>
-					<ul>
-						<li class="fragment">Elegant, readable and simple code makes it hard for bugs to hide</li>
-						<li class="fragment">70% of time spent while maintaining code is spent <em>reading it</em></li>
-						<li class="fragment">Global average for a coder's <abbr title="lines of code">loc</abbr> written p/ day is ~10</li>
-					</ul>
-				</section>
+        <section>
+          <blockquote>
+            "A monad is just a monoid in the category of endofunctors, what's the problem?"
+          </blockquote>
+          <p>- Functional Programmer, Asshole</p>
+        </section>
+        
+        <section>
+          <img src="img/james-iry-about-fpers.png" alt="">
+        </section>
+        
+        <section>
+          <h3>Why to FP?</h3>
+        </section>
 
-				<section>
-					<img src="img/blow-mind.gif" alt="Mindblown Meme" width="480">
-				</section>
-				
-				<section>
-					<h3>Why to FP?</h3>
-					<p class="fragment">Because it allows us to write a more...</p>
-					<ul>
-						<li class="fragment">...reusable code</li>
-						<li class="fragment">...testable code</li>
-						<li class="fragment">...declarative code</li>
-						<li class="fragment">...readable code</li>
-					</ul>
-					<p class="fragment">In general, a more <strong>reliable</strong> & <strong>maintainable</strong> code in the long term</p>
-				</section>
+        <section>
+          <section>
+            <h3>But first, an experiment...</h3>
+            <h4>What this code is doing?</h4>
+          </section>
 
-				<section>
-					<h3>Readability Curve</h3>
-					<img src="img/readability-curve.png" alt="">
-				</section>
+          <section>
+            <pre>
+              <code class="javascript" data-trim style="max-height: 756px; margin: -40px;">
+const words = [
+    'The', 'quick', 'brown', 'fox,', 'jumps', 'over', 
+    'the', 'lazy', 'dog.', '- It', 'was', 'a', 'german', 
+    'shepherd!'
+];
+let result = false;
 
-				<section>
-					<h3>Readability Evolution</h3>
-					<img src="img/fp-evolution.png" alt="">
-				</section>
+for (let i = 0; i < words.length; i++) {
+    words[i] = words[i].replace(/[ -_:;.,!\?]/g, '');
+    
+    if (words[i].length >= 3 && words[i].length <= 6) {
+        words[i] = words[i].toUpperCase()
+          .split('').reverse().join('');
 
-				<section>
-					<h3>How to FP?</h3>
-					<p class="fragment">Some mandatory topics:</p>
-					<ul>
-						<li class="fragment">First Class Functions</li>
-						<li class="fragment">Function Purity</li>
-						<li class="fragment">Closures & High Order Functions</li>
-						<li class="fragment">Managing Function Input</li>
-						<li class="fragment">Function Composition</li>
-						<li class="fragment">Value Immutability</li>
-						<li class="fragment">Array Operations</li>
-						<li class="fragment">Recursion</li>
-						<li class="fragment">Monads</li>
-					</ul>
-				</section>
+        if (words[i] === 'GOD') {
+            result = true;
+            break;
+        }
+    }
+}
 
-				<section>
-					<section>
-						<h3>How to FP?</h3>
-						<p>Some mandatory topics:</p>
-						<ul>
-							<li style="color: crimson">First Class Functions</li>
-							<li>Function Purity</li>
-							<li>High Order Functions / Closures</li>
-							<li>Managing Function Input</li>
-							<li>Function Composition</li>
-							<li>Value Immutability</li>
-							<li>Array Operations</li>
-							<li>Recursion</li>
-							<li>Monads</li>
-						</ul>
-					</section>
-					
-					<section>
-						<h3>First Class Functions</h3>
-						<h4 class="fragment">(or functions as values)</h4>
-					</section>
-				</section>
+if (result) console.log('Found GOD...');
 
-				<section>
-					<section>
-						<h3>How to FP?</h3>
-						<p>Some mandatory topics:</p>
-						<ul>
-							<li>First Class Functions</li>
-							<li style="color: crimson">Function Purity</li>
-							<li>High Order Functions / Closures</li>
-							<li>Managing Function Input</li>
-							<li>Function Composition</li>
-							<li>Value Immutability</li>
-							<li>Array Operations</li>
-							<li>Recursion</li>
-							<li>Monads</li>
-						</ul>
-					</section>
+if (words[0] !== 'The') console.log('...and the devil');
+              </code>
+            </pre>
+          </section>
 
-					<section>
-						<h3>Function Purity</h3>
-						<h4 class="fragment">(or avoiding side effects)</h4>
-					</section>
-				</section>
+          <section>
+            <h4>And this one?</h4>
+          </section>
+          
+          <section>
+            <pre><code class="javascript" data-trim style="max-height: 756px; margin: -20px;">
+const words = [
+    'The', 'quick', 'brown', 'fox,', 'jumps', 'over', 
+    'the', 'lazy', 'dog.', '- It', 'was', 'a', 'german', 
+    'shepherd!'
+];
+const removeInvalidChars = word => word.replace(/[ -_:;.,!\?]/g, '');
+const enoughChars = word => word.length >= 3;
+const notManyChars = word => word.length <= 6;
+const canContainGod = and(enoughChars, notManyChars);
+const toUpperCase = word => word.toUpperCase();
+const reverseStr = word => word.split('').reverse().join('');
+const toBibleCode = compose(reverseStr, toUpperCase);
+const isGod = word => word === 'GOD';
 
-				<section>
-					<section>
-						<h3>How to FP?</h3>
-						<p>Some mandatory topics:</p>
-						<ul>
-							<li>First Class Functions</li>
-							<li>Function Purity</li>
-							<li style="color: crimson">High Order Functions / Closures</li>
-							<li>Managing Function Input</li>
-							<li>Function Composition</li>
-							<li>Value Immutability</li>
-							<li>Array Operations</li>
-							<li>Recursion</li>
-							<li>Monads</li>
-						</ul>
-					</section>
+const result = words
+    .map(removeInvalidChars)
+    .filter(canContainGod)
+    .map(toBibleCode)
+    .some(isGod);
 
-					<section>
-						<h3>High Order Functions / Closures</h3>
-						<h4 class="fragment">(or working with stateful functions)</h4>
-					</section>
-				</section>
+if (result) console.log('Found GOD...');
 
-				<section>
-					<section>
-						<h3>How to FP?</h3>
-						<p>Some mandatory topics:</p>
-						<ul>
-							<li>First Class Functions</li>
-							<li>Function Purity</li>
-							<li>High Order Functions / Closures</li>
-							<li style="color: crimson">Managing Function Input</li>
-							<li>Function Composition</li>
-							<li>Value Immutability</li>
-							<li>Array Operations</li>
-							<li>Recursion</li>
-							<li>Monads</li>
-						</ul>
-					</section>
+if (words[0] !== 'The') console.log('...and the devil');
+            </code></pre>
+          </section>
 
-					<section>
-						<h3>Managing Function Input</h3>
-						<h4 class="fragment">(or manipulating function arguments)</h4>
-					</section>
-				</section>
+          <section>
+            <h3>Answer:</h3>
+            <h4 class="fragment">(Almost) the same thing</h4>
+            <p class="fragment">Challenge: Can you spot a difference between both outputs?</p>
+          </section>
+        </section>
+        
+        <section>
+          <h3>Some facts:</h3>
+          <h4>(that may blow your mind)</h4>
+          <ul>
+            <li class="fragment">Elegant, readable and simple code makes it hard for bugs to hide</li>
+            <li class="fragment">70% of time spent while maintaining code is spent <em>reading it</em></li>
+            <li class="fragment">Global average for a coder's <abbr title="lines of code">loc</abbr> written p/ day is ~10</li>
+          </ul>
+        </section>
 
-				<section>
-					<section>
-						<h3>How to FP?</h3>
-						<p>Some mandatory topics:</p>
-						<ul>
-							<li>First Class Functions</li>
-							<li>Function Purity</li>
-							<li>High Order Functions / Closures</li>
-							<li>Managing Function Input</li>
-							<li style="color: crimson">Function Composition</li>
-							<li>Value Immutability</li>
-							<li>Array Operations</li>
-							<li>Recursion</li>
-							<li>Monads</li>
-						</ul>
-					</section>
+        <section>
+          <img src="img/blow-mind.gif" alt="Mindblown Meme" width="480">
+        </section>
+        
+        <section>
+          <h3>Why to FP?</h3>
+          <p class="fragment">Because it allows us to write a more...</p>
+          <ul>
+            <li class="fragment">...reusable code</li>
+            <li class="fragment">...testable code</li>
+            <li class="fragment">...declarative code</li>
+            <li class="fragment">...readable code</li>
+          </ul>
+          <p class="fragment">In general, a more <strong>reliable</strong> & <strong>maintainable</strong> code in the long term</p>
+        </section>
 
-					<section>
-						<h3>Function Composition</h3>
-						<h4 class="fragment">(or playing with building blocks)</h4>
-					</section>
-				</section>
+        <section>
+          <h3>Readability Curve</h3>
+          <img src="img/readability-curve.png" alt="">
+        </section>
 
-				<section>
-					<section>
-						<h3>How to FP?</h3>
-						<p>Some mandatory topics:</p>
-						<ul>
-							<li>First Class Functions</li>
-							<li>Function Purity</li>
-							<li>High Order Functions / Closures</li>
-							<li>Managing Function Input</li>
-							<li>Function Composition</li>
-							<li style="color: crimson">Value Immutability</li>
-							<li>Array Operations</li>
-							<li>Recursion</li>
-							<li>Monads</li>
-						</ul>
-					</section>
+        <section>
+          <h3>Readability Evolution</h3>
+          <img src="img/fp-evolution.png" alt="">
+        </section>
 
-					<section>
-						<h3>Value Immutability</h3>
-						<h4 class="fragment">(or writing predictable logic)</h4>
-					</section>
-				</section>
+        <section>
+          <h3>How to FP?</h3>
+          <p class="fragment">Some mandatory topics:</p>
+          <ul>
+            <li class="fragment">First Class Functions</li>
+            <li class="fragment">High-Order Functions & Closures</li>
+            <li class="fragment">Function Purity</li>
+            <li class="fragment">Managing Function Input</li>
+            <li class="fragment">Function Composition</li>
+            <li class="fragment">Value Immutability</li>
+            <li class="fragment">Array Operations</li>
+            <li class="fragment">Recursion</li>
+            <li class="fragment">Monads</li>
+          </ul>
+        </section>
 
-				<section>
-					<section>
-						<h3>How to FP?</h3>
-						<p>Some mandatory topics:</p>
-						<ul>
-							<li>First Class Functions</li>
-							<li>Function Purity</li>
-							<li>High Order Functions / Closures</li>
-							<li>Managing Function Input</li>
-							<li>Function Composition</li>
-							<li>Value Immutability</li>
-							<li style="color: crimson">Array Operations</li>
-							<li>Recursion</li>
-							<li>Monads</li>
-						</ul>
-					</section>
+        <section>
+          <section>
+            <h3>How to FP?</h3>
+            <p>Some mandatory topics:</p>
+            <ul>
+              <li style="color: crimson">First Class Functions</li>
+              <li>High-Order Functions & Closures</li>
+              <li>Function Purity</li>
+              <li>Managing Function Input</li>
+              <li>Function Composition</li>
+              <li>Value Immutability</li>
+              <li>Array Operations</li>
+              <li>Recursion</li>
+              <li>Monads</li>
+            </ul>
+          </section>
+          
+          <section>
+            <h3>First Class Functions</h3>
+            <h4 class="fragment">(or functions as values)</h4>
+          </section>
 
-					<section>
-						<h3>Array Operations</h3>
-						<h4 class="fragment">(or more readable loops)</h4>
-					</section>
-				</section>
+          <section>
+            <p>The majority of patterns and tools around FP requires functions to be treated as first-class citizens</p>
+            <p class="fragment">Which means they can:</p>
+          </section>
 
-				<section>
-					<section>
-						<h3>How to FP?</h3>
-						<p>Some mandatory topics:</p>
-						<ul>
-							<li>First Class Functions</li>
-							<li>Function Purity</li>
-							<li>High Order Functions / Closures</li>
-							<li>Managing Function Input</li>
-							<li>Function Composition</li>
-							<li>Value Immutability</li>
-							<li>Array Operations</li>
-							<li style="color: crimson">Recursion</li>
-							<li>Monads</li>
-						</ul>
-					</section>
+          <section>
+            <h3>Be assigned to variables</h3>
+          
+            <pre><code class="javascript" data-trim>
+// anonymous functions
+const aFunction = function () { 
+  console.log('hello fp');
+};
+// or named functions
+const aFunction = function aFunctionName() { 
+  console.log('hello fp');
+};
+// or arrow functions
+const aFunction = () => console.log('hello fp');
+// or even borrowed methods
+const aFunction = someObj.someOtherFunction;
+            </code></pre>
+          </section>
 
-					<section>
-						<h3>Recursion</h3>
-						<h4 class="fragment">(or recursion (or recursion...))</h4>
-					</section>
-				</section>
+          <section>
+            <h3>Be assigned to data structures</h3>
 
-				<section>
-					<section>
-						<h3>How to FP?</h3>
-						<p>Some mandatory topics:</p>
-						<ul>
-							<li>First Class Functions</li>
-							<li>Function Purity</li>
-							<li>High Order Functions / Closures</li>
-							<li>Managing Function Input</li>
-							<li>Function Composition</li>
-							<li>Value Immutability</li>
-							<li>Array Operations</li>
-							<li>Recursion</li>
-							<li style="color: crimson">Monads</li>
-						</ul>
-					</section>
+            <pre><code class="javascript" data-trim>
+// With objects
+const obj = {
+  methodAnon: function() { },
+  methodNamed: function aFunctionName() { },
+  methodArrow: () => { },
+  methodBorrowed: otherObj.someOtherFunction;
+};
+// Or with arrays
+const arr = [
+  function() { },
+  function aFunctionName() { },
+  () => { },
+  otherObj.someOtherFunction
+];
+            </code></pre>
+          </section>
 
-					<section>
-						<h3>Monads</h3>
-						<h4 class="fragment">(or the thing that, once understood, you won't be able to explain)</h4>
-					</section>
-				</section>
+          <section>
+            <h3>Be used as other functions arguments</h3>
+  
+            <pre><code class="javascript" data-trim>
+const hello = () => {
+  console.log('hello fp');
+};
 
-				<section>
-					<h3>What to FP?</h3>
-					<img class="fragment" src="img/fp-all-the-things.jpg" alt="FP ALL THE THINGS!!!">
-				</section>
-			</div>
-		</div>
+const callFn = fn => fn();
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+// ...
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+callFn(hello); // hello fp
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Be returned from other functions</h3>
+
+            <pre><code class="javascript" data-trim>
+const getHello = () => {
+  return () => {
+    console.log('hello fp');
+  };
+};
+// or the shorter
+const getHello = () => () => console.log('hello fp');
+
+// ...
+
+const hello = getHello();
+hello(); // hello fp
+// or in one go
+getHello()(); // hello fp
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>How to FP?</h3>
+            <p>Some mandatory topics:</p>
+            <ul>
+              <li>First Class Functions</li>
+              <li style="color: crimson">High-Order Functions & Closures</li>
+              <li>Function Purity</li>
+              <li>Managing Function Input</li>
+              <li>Function Composition</li>
+              <li>Value Immutability</li>
+              <li>Array Operations</li>
+              <li>Recursion</li>
+              <li>Monads</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>High-Order Functions & Closures</h3>
+            <h4 class="fragment">(or working with stateful functions)</h4>
+          </section>
+
+          <section>
+            <h3>High-Order Functions</h3>
+            <p>A high-order function is a function that does at least one of the following:</p>
+          </section>
+
+          <section>
+            <h3>1. Takes one or more functions as arguments</h3>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+const highOrderSecret = (fnArg) => {
+  const secret = 'FP rulez!';
+
+  fnArg(fnArg);
+};
+
+const logSecret = (secret) => console.log(secret);
+const saveSecret = (secret) => secretStorage.add(secret);
+
+// ...
+
+highOrderSecret(logSecret); // FP rulez!
+highOrderSecret(saveSecret);
+            </code></pre>
+
+            <p class="fragment">Useful to separate concerns and abstract/decouple logic</p>
+          </section>
+
+          <section>
+            <h3>2. Returns a function as it's result</h3>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+const makeSecret = () => {
+  const secret = 'FP rulez!';
+
+  return () => secret; // Btw, this is a closure
+};
+
+const getSecret = makeSecret();
+
+console.log(getSecret()); // FP rulez!
+            </code></pre>
+
+            <p class="fragment">Useful to "hide" state (achieve privacy), persist state to be processed/used later and compose/add behaviour to other functions</p>
+          </section>
+
+          <section>
+            <h3>Closures</h3>
+
+            <p>A closure is a function that refers to "free variables" (variables defined in parent scopes)</p>
+            <p class="fragment">In other words, it's a function that <em>"remembers"</em> the state/environment where it was created</p>
+          </section>
+          
+          <section>
+            <h3>A closer look into a closure</h3>
+            <pre><code class="javascript" data-trim style="max-height: 600px">
+// global scope
+const makeSecret = () => {
+  // scope 0
+  const secret = 'FP rulez';
+  // following will log undefined because parent a scope
+  // does not have access to child scopes
+  console.log(secretSuffix); // undefined
+
+  return () => {
+    // scope 1
+    const secretSuffix = '!!!!!';
+
+    return secret + secretSuffix;
+  };
+};
+
+console.log(secret); // undefined - we're in global scope here
+
+const getSecret = makeSecret();
+// It remembers it's own scope plus parent scopes
+console.log(getSecret()); // FP rulez!!!!!
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>How to FP?</h3>
+            <p>Some mandatory topics:</p>
+            <ul>
+              <li>First Class Functions</li>
+              <li>High-Order Functions & Closures</li>
+              <li style="color: crimson">Function Purity</li>
+              <li>Managing Function Input</li>
+              <li>Function Composition</li>
+              <li>Value Immutability</li>
+              <li>Array Operations</li>
+              <li>Recursion</li>
+              <li>Monads</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Function Purity</h3>
+            <h4 class="fragment">(or avoiding side effects)</h4>
+          </section>
+
+          <section>
+            <p>A function is considered <em>pure</em> if it does not break the following "laws":</p>
+            <ol>
+              <li class="fragment">
+                <em>Always</em> has to return the 
+                <em>same output</em> given the 
+                <em>same input</em>
+              </li>
+              <li class="fragment">
+                Does <em>not</em> depend on/causes any <em>side effect</em> (state mutations, I/O operations) 
+              </li>
+            </ol>
+          </section>
+
+          <section>
+            <h3>Pure Functions</h3>
+
+             <pre><code class="javascript" data-trim>
+const add = (a, b) => a + b;
+
+const getCircleArea = r => Math.PI * r * r;
+
+const getFullName = (first, last) => `${first} ${last}`;
+
+const logUserIn = user => Object.assign(
+  {}, 
+  user, 
+  { loggedIn: true }
+); 
+             </code></pre>
+          </section>
+
+          <section>
+            <h3>Unpure Functions</h3>
+
+            <pre><code class="javascript" data-trim>
+// I/O operation
+const logMsg = msg => console.log(msg);
+
+// Different outputs, same input
+const getRandom = (max) => Math.random() * max;
+
+// depends on mutable state
+const getFullName = (first, last) => 
+  `${globalNamePrefix} ${first} ${last}`;
+
+// Mutating object state
+const logUserIn = user => user.loggedIn = true;
+             </code></pre>
+          </section>
+          <section>
+            <p>A program without any observable side effect is also a program that <em>accomplishes nothing useful</em></p>
+            <p class="fragment">but, side effects should be <em>avoided</em> where possible</p>
+            <p class="fragment">as they make programs <em>hard to follow/read</em>, hard to test and hard to maintain</p>
+            <p class="fragment">most of a program codebase should be composed of small, single-purpose and <em>pure</em> functions</p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>How to FP?</h3>
+            <p>Some mandatory topics:</p>
+            <ul>
+              <li>First Class Functions</li>
+              <li>High-Order Functions & Closures</li>
+              <li>Function Purity</li>
+              <li style="color: crimson">Managing Function Input</li>
+              <li>Function Composition</li>
+              <li>Value Immutability</li>
+              <li>Array Operations</li>
+              <li>Recursion</li>
+              <li>Monads</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Managing Function Input</h3>
+            <h4 class="fragment">(or manipulating function arguments)</h4>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>How to FP?</h3>
+            <p>Some mandatory topics:</p>
+            <ul>
+              <li>First Class Functions</li>
+              <li>High-Order Functions & Closures</li>
+              <li>Function Purity</li>
+              <li>Managing Function Input</li>
+              <li style="color: crimson">Function Composition</li>
+              <li>Value Immutability</li>
+              <li>Array Operations</li>
+              <li>Recursion</li>
+              <li>Monads</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Function Composition</h3>
+            <h4 class="fragment">(or playing with building blocks)</h4>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>How to FP?</h3>
+            <p>Some mandatory topics:</p>
+            <ul>
+              <li>First Class Functions</li>
+              <li>High-Order Functions & Closures</li>
+              <li>Function Purity</li>
+              <li>Managing Function Input</li>
+              <li>Function Composition</li>
+              <li style="color: crimson">Value Immutability</li>
+              <li>Array Operations</li>
+              <li>Recursion</li>
+              <li>Monads</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Value Immutability</h3>
+            <h4 class="fragment">(or writing predictable logic)</h4>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>How to FP?</h3>
+            <p>Some mandatory topics:</p>
+            <ul>
+              <li>First Class Functions</li>
+              <li>High-Order Functions & Closures</li>
+              <li>Function Purity</li>
+              <li>Managing Function Input</li>
+              <li>Function Composition</li>
+              <li>Value Immutability</li>
+              <li style="color: crimson">Array Operations</li>
+              <li>Recursion</li>
+              <li>Monads</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Array Operations</h3>
+            <h4 class="fragment">(or more readable loops)</h4>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>How to FP?</h3>
+            <p>Some mandatory topics:</p>
+            <ul>
+              <li>First Class Functions</li>
+              <li>High-Order Functions & Closures</li>
+              <li>Function Purity</li>
+              <li>Managing Function Input</li>
+              <li>Function Composition</li>
+              <li>Value Immutability</li>
+              <li>Array Operations</li>
+              <li style="color: crimson">Recursion</li>
+              <li>Monads</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Recursion</h3>
+            <h4 class="fragment">(or recursion (or recursion...))</h4>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h3>How to FP?</h3>
+            <p>Some mandatory topics:</p>
+            <ul>
+              <li>First Class Functions</li>
+              <li>High-Order Functions & Closures</li>
+              <li>Function Purity</li>
+              <li>Managing Function Input</li>
+              <li>Function Composition</li>
+              <li>Value Immutability</li>
+              <li>Array Operations</li>
+              <li>Recursion</li>
+              <li style="color: crimson">Monads</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Monads</h3>
+            <h4 class="fragment">(or the thing that, once understood, you won't be able to explain)</h4>
+          </section>
+        </section>
+
+        <section>
+          <h3>What to FP?</h3>
+          <img class="fragment" src="img/fp-all-the-things.jpg" alt="FP ALL THE THINGS!!!">
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
 </html>

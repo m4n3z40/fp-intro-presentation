@@ -95,7 +95,8 @@ body {
   font-weight: bold; }
 
 .reveal em {
-  font-style: italic; }
+  font-style: italic;
+  color: crimson; }
 
 .reveal ol,
 .reveal dl,
