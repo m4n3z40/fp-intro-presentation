@@ -53,30 +53,30 @@
           <section>
             <pre>
               <code class="javascript" data-trim style="max-height: 756px; margin: -40px;">
-const words = [
-    'The', 'quick', 'brown', 'fox,', 'jumps', 'over', 
-    'the', 'lazy', 'dog.', '- It', 'was', 'a', 'german', 
-    'shepherd!'
-];
-let result = false;
+                const words = [
+                    'The', 'quick', 'brown', 'fox,', 'jumps', 'over', 
+                    'the', 'lazy', 'dog.', '- It', 'was', 'a', 'german', 
+                    'shepherd!'
+                ];
+                let result = false;
 
-for (let i = 0; i < words.length; i++) {
-    words[i] = words[i].replace(/[ -_:;.,!\?]/g, '');
-    
-    if (words[i].length >= 3 && words[i].length <= 6) {
-        words[i] = words[i].toUpperCase()
-          .split('').reverse().join('');
+                for (let i = 0; i < words.length; i++) {
+                    words[i] = words[i].replace(/[ -_:;.,!\?]/g, '');
+                    
+                    if (words[i].length >= 3 && words[i].length <= 6) {
+                        words[i] = words[i].toUpperCase()
+                          .split('').reverse().join('');
 
-        if (words[i] === 'GOD') {
-            result = true;
-            break;
-        }
-    }
-}
+                        if (words[i] === 'GOD') {
+                            result = true;
+                            break;
+                        }
+                    }
+                }
 
-if (result) console.log('Found GOD...');
+                if (result) console.log('Found GOD...');
 
-if (words[0] !== 'The') console.log('...and the devil');
+                if (words[0] !== 'The') console.log('...and the devil');
               </code>
             </pre>
           </section>
@@ -87,29 +87,29 @@ if (words[0] !== 'The') console.log('...and the devil');
           
           <section>
             <pre><code class="javascript" data-trim style="max-height: 756px; margin: -20px;">
-const words = [
-    'The', 'quick', 'brown', 'fox,', 'jumps', 'over', 
-    'the', 'lazy', 'dog.', '- It', 'was', 'a', 'german', 
-    'shepherd!'
-];
-const removeInvalidChars = word => word.replace(/[ -_:;.,!\?]/g, '');
-const enoughChars = word => word.length >= 3;
-const notManyChars = word => word.length <= 6;
-const canContainGod = and(enoughChars, notManyChars);
-const toUpperCase = word => word.toUpperCase();
-const reverseStr = word => word.split('').reverse().join('');
-const toBibleCode = compose(reverseStr, toUpperCase);
-const isGod = word => word === 'GOD';
+              const words = [
+                  'The', 'quick', 'brown', 'fox,', 'jumps', 'over', 
+                  'the', 'lazy', 'dog.', '- It', 'was', 'a', 'german', 
+                  'shepherd!'
+              ];
+              const removeInvalidChars = word => word.replace(/[ -_:;.,!\?]/g, '');
+              const enoughChars = word => word.length >= 3;
+              const notManyChars = word => word.length <= 6;
+              const canContainGod = and(enoughChars, notManyChars);
+              const toUpperCase = word => word.toUpperCase();
+              const reverseStr = word => word.split('').reverse().join('');
+              const toBibleCode = compose(reverseStr, toUpperCase);
+              const isGod = word => word === 'GOD';
 
-const result = words
-    .map(removeInvalidChars)
-    .filter(canContainGod)
-    .map(toBibleCode)
-    .some(isGod);
+              const result = words
+                  .map(removeInvalidChars)
+                  .filter(canContainGod)
+                  .map(toBibleCode)
+                  .some(isGod);
 
-if (result) console.log('Found GOD...');
+              if (result) console.log('Found GOD...');
 
-if (words[0] !== 'The') console.log('...and the devil');
+              if (words[0] !== 'The') console.log('...and the devil');
             </code></pre>
           </section>
 
@@ -203,18 +203,18 @@ if (words[0] !== 'The') console.log('...and the devil');
             <h3>Be assigned to variables</h3>
           
             <pre><code class="javascript" data-trim>
-// anonymous functions
-const aFunction = function () { 
-  console.log('hello fp');
-};
-// or named functions
-const aFunction = function aFunctionName() { 
-  console.log('hello fp');
-};
-// or arrow functions
-const aFunction = () => console.log('hello fp');
-// or even borrowed methods
-const aFunction = someObj.someOtherFunction;
+              // anonymous functions
+              const aFunction = function () { 
+                console.log('hello fp');
+              };
+              // or named functions
+              const aFunction = function aFunctionName() { 
+                console.log('hello fp');
+              };
+              // or arrow functions
+              const aFunction = () => console.log('hello fp');
+              // or even borrowed methods
+              const aFunction = someObj.someOtherFunction;
             </code></pre>
           </section>
 
@@ -222,20 +222,20 @@ const aFunction = someObj.someOtherFunction;
             <h3>Be assigned to data structures</h3>
 
             <pre><code class="javascript" data-trim>
-// With objects
-const obj = {
-  methodAnon: function() { },
-  methodNamed: function aFunctionName() { },
-  methodArrow: () => { },
-  methodBorrowed: otherObj.someOtherFunction;
-};
-// Or with arrays
-const arr = [
-  function() { },
-  function aFunctionName() { },
-  () => { },
-  otherObj.someOtherFunction
-];
+              // With objects
+              const obj = {
+                methodAnon: function() { },
+                methodNamed: function aFunctionName() { },
+                methodArrow: () => { },
+                methodBorrowed: otherObj.someOtherFunction;
+              };
+              // Or with arrays
+              const arr = [
+                function() { },
+                function aFunctionName() { },
+                () => { },
+                otherObj.someOtherFunction
+              ];
             </code></pre>
           </section>
 
@@ -243,15 +243,15 @@ const arr = [
             <h3>Be used as other functions arguments</h3>
   
             <pre><code class="javascript" data-trim>
-const hello = () => {
-  console.log('hello fp');
-};
+              const hello = () => {
+                console.log('hello fp');
+              };
 
-const callFn = fn => fn();
+              const callFn = fn => fn();
 
-// ...
+              // ...
 
-callFn(hello); // hello fp
+              callFn(hello); // hello fp
             </code></pre>
           </section>
 
@@ -259,20 +259,20 @@ callFn(hello); // hello fp
             <h3>Be returned from other functions</h3>
 
             <pre><code class="javascript" data-trim>
-const getHello = () => {
-  return () => {
-    console.log('hello fp');
-  };
-};
-// or the shorter
-const getHello = () => () => console.log('hello fp');
+              const getHello = () => {
+                return () => {
+                  console.log('hello fp');
+                };
+              };
+              // or the shorter
+              const getHello = () => () => console.log('hello fp');
 
-// ...
+              // ...
 
-const hello = getHello();
-hello(); // hello fp
-// or in one go
-getHello()(); // hello fp
+              const hello = getHello();
+              hello(); // hello fp
+              // or in one go
+              getHello()(); // hello fp
             </code></pre>
           </section>
         </section>
@@ -308,19 +308,19 @@ getHello()(); // hello fp
             <h3>1. Takes one or more functions as arguments</h3>
 
             <pre class="fragment"><code class="javascript" data-trim>
-const highOrderSecret = (fnArg) => {
-  const secret = 'FP rulez!';
+              const highOrderSecret = (fnArg) => {
+                const secret = 'FP rulez!';
 
-  fnArg(fnArg);
-};
+                fnArg(fnArg);
+              };
 
-const logSecret = (secret) => console.log(secret);
-const saveSecret = (secret) => secretStorage.add(secret);
+              const logSecret = (secret) => console.log(secret);
+              const saveSecret = (secret) => secretStorage.add(secret);
 
-// ...
+              // ...
 
-highOrderSecret(logSecret); // FP rulez!
-highOrderSecret(saveSecret);
+              highOrderSecret(logSecret); // FP rulez!
+              highOrderSecret(saveSecret);
             </code></pre>
 
             <p class="fragment">Useful to separate concerns and abstract/decouple logic</p>
@@ -330,15 +330,15 @@ highOrderSecret(saveSecret);
             <h3>2. Returns a function as it's result</h3>
 
             <pre class="fragment"><code class="javascript" data-trim>
-const makeSecret = () => {
-  const secret = 'FP rulez!';
+              const makeSecret = () => {
+                const secret = 'FP rulez!';
 
-  return () => secret; // Btw, this is a closure
-};
+                return () => secret; // Btw, this is a closure
+              };
 
-const getSecret = makeSecret();
+              const getSecret = makeSecret();
 
-console.log(getSecret()); // FP rulez!
+              console.log(getSecret()); // FP rulez!
             </code></pre>
 
             <p class="fragment">Useful to "hide" state (achieve privacy), persist state to be processed/used later and compose/add behaviour to other functions</p>
@@ -354,27 +354,27 @@ console.log(getSecret()); // FP rulez!
           <section>
             <h3>A closer look into a closure</h3>
             <pre><code class="javascript" data-trim style="max-height: 600px">
-// global scope
-const makeSecret = () => {
-  // scope 0
-  const secret = 'FP rulez';
-  // following will log undefined because parent a scope
-  // does not have access to child scopes
-  console.log(secretSuffix); // undefined
+              // global scope
+              const makeSecret = () => {
+                // scope 0
+                const secret = 'FP rulez';
+                // following will log undefined because parent a scope
+                // does not have access to child scopes
+                console.log(secretSuffix); // undefined
 
-  return () => {
-    // scope 1
-    const secretSuffix = '!!!!!';
+                return () => {
+                  // scope 1
+                  const secretSuffix = '!!!!!';
 
-    return secret + secretSuffix;
-  };
-};
+                  return secret + secretSuffix;
+                };
+              };
 
-console.log(secret); // undefined - we're in global scope here
+              console.log(secret); // undefined - we're in global scope here
 
-const getSecret = makeSecret();
-// It remembers it's own scope plus parent scopes
-console.log(getSecret()); // FP rulez!!!!!
+              const getSecret = makeSecret();
+              // It remembers it's own scope plus parent scopes
+              console.log(getSecret()); // FP rulez!!!!!
             </code></pre>
           </section>
         </section>
@@ -418,37 +418,37 @@ console.log(getSecret()); // FP rulez!!!!!
           <section>
             <h3>Pure Functions</h3>
 
-             <pre><code class="javascript" data-trim>
-const add = (a, b) => a + b;
+            <pre><code class="javascript" data-trim>
+              const add = (a, b) => a + b;
 
-const getCircleArea = r => Math.PI * r * r;
+              const getCircleArea = r => Math.PI * r * r;
 
-const getFullName = (first, last) => `${first} ${last}`;
+              const getFullName = (first, last) => `${first} ${last}`;
 
-const logUserIn = user => Object.assign(
-  {}, 
-  user, 
-  { loggedIn: true }
-); 
-             </code></pre>
+              const logUserIn = user => Object.assign(
+                {}, 
+                user, 
+                { loggedIn: true }
+              ); 
+            </code></pre>
           </section>
 
           <section>
             <h3>Unpure Functions</h3>
 
             <pre><code class="javascript" data-trim>
-// I/O operation
-const logMsg = msg => console.log(msg);
+              // I/O operation
+              const logMsg = msg => console.log(msg);
 
-// Different outputs, same input
-const getRandom = (max) => Math.random() * max;
+              // Different outputs, same input
+              const getRandom = (max) => Math.random() * max;
 
-// depends on mutable state
-const getFullName = (first, last) => 
-  `${globalNamePrefix} ${first} ${last}`;
+              // depends on mutable state
+              const getFullName = (first, last) => 
+                `${globalNamePrefix} ${first} ${last}`;
 
-// Mutating object state
-const logUserIn = user => user.loggedIn = true;
+              // Mutating object state
+              const logUserIn = user => user.loggedIn = true;
              </code></pre>
           </section>
           <section>
@@ -479,6 +479,231 @@ const logUserIn = user => user.loggedIn = true;
           <section>
             <h3>Managing Function Input</h3>
             <h4 class="fragment">(or manipulating function arguments)</h4>
+          </section>
+
+          <section>
+            <h4>Args vs Params</h4>
+            <p>Question: what's the difference between arguments and parameters?</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              // firstName, middleName and lastName are parameters
+              const getFullName = (firstName, middleName, lastName) =>
+                `${firstName} ${middleName} ${lastName}`;
+
+              // All strings passed into getFullName() call are arguments  
+              getFullName('Allan', 'Marques', 'Baptista');
+
+              // arguments < parameters - perfectly valid in JS
+              getFullName('Emperor', 'Palpatine');
+
+              // arguments > parameters - also valid
+              getFullName('Some', 'Big', 'Ass', 'Freaking', 'Name');
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Args vs Params</h4>
+            <p><em>Parameter</em> is the variable which is part of the function signature</p>
+            <p class="fragment"><em>Argument</em> is the value/variable/reference/expression being passed in during a function call</p>
+          </section>
+
+          <section>
+            <h4>Arity</h4>
+            <p>The number of parameters a function expects in it's signature is called <em>arity</em></p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const double = n => n * 2; // arity = 1 (unary)
+
+              // arity = 3 (ternary)
+              const getFullName = (firstName, middleName, lastName) =>
+                `${firstName} ${middleName} ${lastName}`; 
+            </code></pre>
+
+            <p class="fragment">It's possible to get a function's arity through the <code>Function.prototype.length</code> property</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const double = n => n * 2;
+              console.log(double.length); // 1 
+            </code></pre>
+          </section>
+
+          <section>
+            <p>
+              By combining the power of <em>high-order functions (HoF)</em>, 
+              knowledge of function <em>arity</em> and <em>loose arguments</em> application, 
+              we can build powerful abstractions
+            </p>
+          </section>
+
+          <section>
+            <h4>Forcing Unary Functions</h4>
+            <p class="fragment">Sometimes we need to ensure a function that expects more the one parameter to receive only one argument</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const strArr = ['1', '2', '3', '4', '5'];
+              const mumArr = strArr.map(parseInt);
+
+              console.log(numArr); // [1, NaN, NaN, NaN, NaN]
+            </code></pre>
+
+            <p class="fragment">That happens because parseInt's signature is:<br><code>parseInt(str, radix = 10)</code></p>
+            <p class="fragment">And <code>Array.prototype.map</code> calls any function passed in with the arguments:<br><code>fn(item, index, arr)</code></p>
+          </section>
+
+          <section>
+            <h4>Forcing Unary Functions</h4>
+            <p>We can fix that with a utility <em>HoF</em> usually called <em>unary</em></p>
+            
+            <div class="fragment">
+              <p>That can be implemented in JS like so:</p>
+
+              <pre><code class="javascript" data-trim>
+                const unary = fn => 
+                  param => fn(param);
+              </code></pre>
+            </div>
+
+            <div class="fragment">
+              <p>And used like this:</p>
+
+              <pre><code class="javascript" data-trim>
+                const strArr = ['1', '2', '3', '4', '5'];
+                const mumArr = strArr.map(unary(parseInt));
+
+                console.log(numArr); // [1, 2, 3, 4, 5]
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h4>Partial Application</h4>
+
+            <p class="fragment">Calling a function and passing some arguments to it like:<br><code>foo(bar, baz);</code></p>
+            <p class="fragment">can also be described as <em>applying</em> function foo to the arguments bar and baz</p>
+          </section>
+
+          <section>
+            <h4>Partial Application</h4>
+
+            <p>Means <em>fixing/binding</em> a number of arguments to a function producing another function with <em>smaller arity</em></p>
+
+            <p class="fragment">It's useful when we know some of the arguments that'll be applied to a function <em>ahead of time</em></p>
+            <p class="fragment">But the rest of the arguments we'll only know at a later point in execution time.</p>
+          </section>
+
+          <section>
+            <h4>Partial Application</h4>
+
+            <p>A partial function application utility can easily be implemented like so:</p>
+
+            <pre><code class="javascript" data-trim>
+              const partial = (fn, ...eagerArgs) => 
+                (...lazyArgs) => fn(...eagerArgs, ...lazyArgs);
+            </code></pre>
+
+            <div class="fragment">
+              <p>And it's used like this:</p>
+
+              <pre><code class="javascript" data-trim>
+                const fullName = (preferedTreatment, firstName, lastName) =>
+                  `${preferedTreatment} ${lastName}, ${firstName}`;
+
+                const maleName = partial(fullName, 'Sir');
+                const femaleName = partial(fullName, 'Ma\'am');
+
+                maleName('Allan', 'Baptista'); // Sir Baptista, Allan
+                femaleName('Nadia', 'Carvalho'); // Ma'am Carvalho, Nadia
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h4>Partial Application</h4>
+
+            <p>It's also possible to implement a utility that partially applies the <em>final arguments</em> like so:</p>
+
+            <pre><code class="javascript" data-trim>
+              const partialRight = (fn, ...rightArgs) => 
+                (...leftArgs) => fn(...leftArgs, ...rightArgs);
+            </code></pre>
+
+            <div class="fragment">
+              <p>That can be used like this:</p>
+
+              <pre><code class="javascript" data-trim>
+                const fullName = (preferedTreatment, firstName, lastName) =>
+                  `${preferedTreatment} ${lastName}, ${firstName}`;
+
+                const kirk = partial(fullName, 'James', 'Kirk');
+
+                kirk('Sir'); // Sir Kirk, James
+                kirk('Captain'); // Captain Kirk, James
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h4>Currying</h4>
+
+            <p class="fragment">It's a <i>special</i> kind of partial application that only applies the actual function once it's gathered all parameters it expects</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const curriedFullName = preferedTreatment =>
+                firstName =>
+                    lastName =>
+                      `${preferedTreatment} ${lastName}, ${firstName}`;
+
+              const getName = curriedFullName('Mr'); // preferedTreatment = 'Mr'
+              const getLastName = getName('James'); // firstName = 'James'
+              getLastName('Bond'); // Mr. Bond, James
+
+              // or in one go
+
+              curriedFullName('Sir')('Leonard')('Nimoy'); // Sir Nimoy, Leonard 
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Currying</h4>
+
+            <p>In Haskell all functions are curried by default, but in javascript we need to write a utility function to achieve the same</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const autoCurry = (fn, arity = fn.length) =>
+                (...args) => 
+                  args.length >= arity ?
+                    fn(...args) :
+                    autoCurry(partial(fn, ...args), arity - args.length);
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Currying</h4>
+
+            <pre><code class="javascript" data-trim style="max-height: 600px">
+              const curriedFullName = autoCurry(
+                (preferedTreatment, firstName, lastName) =>
+                  `${preferedTreatment} ${lastName}, ${firstName}`
+              );
+
+              const getName = curriedFullName('Mr'); // preferedTreatment = 'Mr'
+              const getLastName = getName('James'); // firstName = 'James'
+              getLastName('Bond'); // Mr. Bond, James
+
+              // or
+              curriedFullName('Sir')('Leonard')('Nimoy'); // Sir Nimoy, Leonard
+              // or
+              curriedFullName('Sir')('Rowan', 'Atkinson'); // Sir Atkinson, Rowan
+              // or
+              curriedFullName('Mr', 'Mickey', 'Mouse'); // Mr Mouse, Mickey
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Currying</h4>
+
+            <p>Note that the strict implementation of currying produces only <em>unary</em> functions after each call</p>
+            <p class="fragment">So the implementation showed here should be called <em>loose currying</em>, which is often more useful</p>
           </section>
         </section>
 
