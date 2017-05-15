@@ -2,17 +2,17 @@ const identity = obj => obj;
 
 const partial = 
         (fn, ...eagerArgs) => 
-            (...lasyArgs) => fn(...eagerArgs, ...lasyArgs);
+            (...lazyArgs) => fn(...eagerArgs, ...lazyArgs);
     
 const partialRight =
     (fn, ...eagerArgs) =>
-        (...lasyArgs) => fn(...lasyArgs, ...eagerArgs);
+        (...lazyArgs) => fn(...lazyArgs, ...eagerArgs);
 
-const curry = 
-    (fn, initialArgs = [], arity = fn.length) =>
-        (...args) => arity <= args.length ? 
-            fn(...initialArgs, ...args) : 
-            curry(fn, [...initialArgs, ...args], fn.length - args.length); 
+const autoCurry = (fn, arity = fn.length) =>
+    (...args) =>
+        args.length >= arity ?
+            fn(...args) :
+            autoCurry(partial(fn, ...args), arity - args.length);
 
 const compose = 
     (...fns) => 

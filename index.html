@@ -728,6 +728,104 @@
             <h3>Function Composition</h3>
             <h4 class="fragment">(or playing with building blocks)</h4>
           </section>
+
+          <section>
+            <p>When a program/application is well split into simple, single-purpose and pure functions a repeating pattern starts to come up:</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const outputData = freeze(enhance(escape(inputData)));
+            </code></pre>
+
+            <p class="fragment">And to avoid repetition, it's common to create <em>composed abstractions</em>:</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const transformData = data => freeze(enhance(escape(data)));
+
+              // later somewhere...
+              const outputData = transformData(inputData);
+
+              // and even later...
+              const dataToPersist = transformData(inputData);
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>A better way</h4>
+
+            <p class="fragment">What if there was a way to achieve the same thing in a <em>declarative way</em>?</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const transformData = compose(freeze, enhance, escape);
+
+              // later somewhere...
+              const outputData = transformData(inputData);
+            </code></pre>
+          </section>
+
+          <section>
+            <p><code>compose(...fns)</code> takes a list of functions</p>
+            <p class="fragment">and returns another function that applies each function from <em>right to left</em>, so:</p>
+            <pre class="fragment"><code class="javascript" data-trim>
+              // This
+              transformData(...args);
+
+              // is the same as this
+              const escaped = escape(...args);
+              const enhanced = enhance(escaped);
+              const outputData = freeze(enhanced);
+
+              // or this
+              const outputData = freeze(enhance(escape(...args)));
+            </code></pre>
+          </section>
+
+          <section>
+            <p>One can implement <code>compose</code> in JS like so:</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const compose = (...fns) =>
+                (...args) => fns
+                  .slice(0, -1)
+                  .reduceRight(
+                    (res, fn) => fn(res),
+                    fns[fns.length - 1](...args)
+                  );
+            </code></pre>
+
+            <p class="fragment">Note that all functions besides the first one to be applied are expected to be <em>unary</em></p>
+            <p class="fragment">as it's not possible to return more the one value from a function</p>
+          </section>
+
+          <section>
+            <h4>Piping</h4>
+            <p>Sometimes reading the flow of data from right to left can be counter-intuitive</p>
+            <p class="fragment">to fix that, we can build a variation of <code>compose</code> that applies each function from <em>left to right</em></p>
+            <p class="fragment">that variation is usually called <em>pipe or pipeline</em></p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const transformData = pipe(escape, enhance, freeze);
+
+              // later somewhere...
+              const outputData = transformData(inputData);
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Piping</h4>
+            <p><code>pipe</code> can be implemented like so:</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const pipe = (firstFn, ...restFns) =>
+                (...args) => restFns.reduce(
+                  (res, fn) => fn(res),
+                  firstFn(...args)
+                );
+            </code></pre>
+
+            <p class="fragment">Other than the difference on how data flows <code>compose</code> and <code>pipe</code> works in the same way</p>
+
+            <p class="fragment"><small>(Except this implementation o <code>pipe</code> is a little bit more performant than <code>compose</code>'s implementation showed before)</small></p>
+          </section>
         </section>
 
         <section>
@@ -750,6 +848,179 @@
           <section>
             <h3>Value Immutability</h3>
             <h4 class="fragment">(or writing predictable logic)</h4>
+          </section>
+
+          <section>
+            <p>In javascript (and the majority of hybrid/OO languages) immutability is usually <em>not natively enforced</em> on objects</p>
+            <p class="fragment">Some may naively think assigning objects with the <code>const</code> keyword prevents objects from being mutated</p>
+          </section>
+
+          <section>
+            <pre><code class="javascript" data-trim>
+              const config = { cannotChange: 'Never changed' };
+
+              config.cannotChange = 'Chaos';
+
+              console.log(config); // { cannotChange: 'Chaos' }
+
+              // but the following throws a TypeError
+              config = { cannotChange: 'Invalid' };
+            </code></pre>
+
+            <p class="fragment">But in fact, <code>const</code> only prevents the variable from being <em>re-assigned</em></p>
+          </section>
+
+          <section>
+            <h4>The case for immutability</h4>
+
+            <ul>
+              <li class="fragment">Mutating an object is a <em>side effect</em></li>
+              <li class="fragment">Mutable objects are <em>hard to follow/read</em></li>
+              <li class="fragment">Mutable objects are <em>hard to predict</em></li>
+              <li class="fragment">Mutable objects often are the source of hard-to-find <em>bugs</em></li>
+              <li class="fragment">Mutable objects are <em>hard to debug</em></li>
+            </ul>
+
+            <p class="fragment">So, if immutability is not enforced natively by the language, how do we achieve it?</p>
+          </section>
+
+          <section>
+            <h3>Immutability as a choice</h3>
+            <h4>Plain Objects</h4>
+
+            <pre><code class="javascript" data-trim>
+              // Very bad
+              const logIn = user => {
+                user.loggedIn = true;
+
+                return user;
+              };
+
+              const loggedUser = logIn(anonymousUser);
+
+              console.log(loggedUser.loggedIn); // true
+              console.log(anonymous.loggedIn); // true
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Immutability as a choice</h3>
+            <h4>Plain Objects</h4>
+
+            <pre><code class="javascript" data-trim>
+              // Good
+              const logIn = user => {
+                const userCopy = Object.assign({}, user);
+
+                userCopy.loggedIn = true;
+
+                return userCopy;
+              };
+
+              const loggedUser = logIn(anonymousUser);
+
+              console.log(loggedUser.loggedIn); // true
+              console.log(anonymous.loggedIn); // false
+            </code></pre>
+
+            <p class="fragment">Pattern: copy objects and <em>mutate the copy</em></p>
+          </section>
+
+          <section>
+            <h3>Immutability as a choice</h3>
+            <h4>Arrays</h4>
+
+            <pre><code class="javascript" data-trim>
+              // Very bad
+              const addTask = (taskList, task) => {
+                taskList.push(add);
+
+                return taskList;
+              };
+
+              const newTaskList = addTask(taskList, task);
+
+              console.log(newTaskList.length); // 10
+              console.log(taskList.length); // 10
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Immutability as a choice</h3>
+            <h4>Arrays</h4>
+
+            <pre><code class="javascript" data-trim>
+              // Good
+              const addTask = (taskList, task) => {
+                // or [...taskList, task];
+                return taskList.concat(task);
+              };
+
+              const newTaskList = addTask(taskList, task);
+
+              console.log(newTaskList.length); // 10
+              console.log(taskList.length); // 9
+            </code></pre>
+            <p class="fragment">Pattern: <em>avoid mutable methods</em> (push, pop, shift, unshift, splice, sort, fill, reverse)</p>
+            <p class="fragment">instead <em>use immutable methods</em> (concat, slice, map, filter) or the spread notation</p>
+          </section>
+
+          <section>
+            <h3>Immutability as a law</h3>
+            <p><code>Object.freeze</code> <em>freezes</em> an object, preventing it from being mutated (works w/ arrays as well)</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const user = Object.freeze({ name: 'Elza' });
+
+              user.name = 'Evil'; // throws if in 'strict mode'
+
+              console.log(user.name); // Elza
+            </code></pre>
+
+            <p class="fragment">Pattern: combine <code>Object.freeze</code> with other immutable patterns to achieve <em>full immutability</em></p>
+          </section>
+
+          <section>
+            <p>Note that <code>Object.freeze</code> only freezes objects <em>shallowly</em></p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const user = Object.freeze({
+                name: {
+                  first: 'Elza',
+                  last: 'Arendelle'
+                }
+              });
+
+              user.name.first = 'Evil';
+
+              // { first: 'Evil', last: 'Arendelle' }
+              console.log(user.name);
+            </code></pre>
+
+            <p class="fragment">So to achieve full immutability all child objects also need to be frozen</p>
+          </section>
+
+          <section>
+            <p>Note that these patterns are much <em>less performant</em> than it's mutable counterpart</p>
+            <p class="fragment">Even more if we're dealing with <em>deep nested objects</em></p>
+            <p class="fragment">If you need immutability as well as performance maybe <em>it's time to bring a library in</em></p>
+          </section>
+
+          <section>
+            <h3>Immutability Libs</h3>
+            <ul>
+              <li><a href="https://facebook.github.io/immutable-js/">ImmutableJS</a> (by facebook)</li>
+              <li><a href="http://swannodette.github.io/mori/">mori</a> (port of ClojureScript data structures)</li>
+            </ul>
+          </section>
+
+          <section>
+            <p>But if performance is still an issue, you should think about replacing parts of your code with mutable patterns</p>
+            <p class="fragment">but remember:</p>
+            <blockquote class="fragment">
+              "Premature optimization is the root of all evil" <br>
+              - Donald Knuth
+            </blockquote>
           </section>
         </section>
 
