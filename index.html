@@ -1048,22 +1048,89 @@
           </section>
 
           <section>
-            <h4><code>map()</code></h4>
+            <h4>Array methods vs Loops</h4>
+
+            <pre><code class="javascript" data-trim data-noescape>
+              const activeItems = [];
+
+              for (let i = 0; i < arr.length; i++) {
+                if (arr[i].active === true) {
+                  activeItems.push(arr[i]);
+                }
+              }
+
+              // vs
+
+              const activeItems = arr.filter(item => item.active === true);
+              <br>
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Array methods vs Loops</h4>
+
+            <p class="fragment">Array methods are usually better because:</p>
+            <ul>
+              <li class="fragment">Traversal logic is abstracted</li>
+              <li class="fragment">Terser, more readable and <em>declarative code</em></li>
+              <li class="fragment"><em>Functions</em> and all it's goodness!</li>
+            </ul>
+
+            <p>&nbsp;</p>
+
+            <p class="fragment">Loops are better when:</p>
+            <ul>
+              <li class="fragment">Performance is needed (still, very questionable)</li>
+              <li class="fragment">Need to break out of loop early</li>
+            </ul>
           </section>
 
           <section>
             <h4><code>map()</code></h4>
 
-            <img src="img/array-reduce.png" alt="An array map representation" style="background: white; width: 500px">
+            <p><code>Array.prototype.map</code> is a <em>HoF</em> that traverses the list applying the provided <em>operator function</em> to each item</p>
+            <p class="fragment">and produces a <em>new array</em> with the values returned from each operator call</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const bananas = ['&#x1F34C', '&#x1F34C', '&#x1F34C', '&#x1F34C', '&#x1F34C', '&#x1F34C'];
+
+              const mix = bananas.map((banana, index) => (
+                index % 2 === 0 ? '&#x1F34E' : banana
+              ));
+
+              console.log(mix); // ['&#x1F34E', '&#x1F34C', '&#x1F34E', '&#x1F34C', '&#x1F34E', '&#x1F34C']
+            </code></pre>
+          </section>
+
+          <section>
+            <h4><code>map()</code></h4>
+
+            <img src="img/array-map.png" alt="An array map representation" style="background: white; width: 500px">
             <p><small>Source: <a href="https://github.com/getify/Functional-Light-JS/blob/master/ch8.md">https://github.com/getify/Functional-Light-JS/blob/master/ch8.md</a></small></p>
           </section>
 
           <section>
-            <h4>A word about the feared Functor</h4>
+            <h4>A word about the feared <em>Functor</em></h4>
+
+            <p class="fragment">In FP terminology, a Functor is a <em>wrapper object</em> that has a utility method for applying an <em>operator function</em> to it's wrapped value</p>
+            <p class="fragment">returning a <em>new Functor</em> wrapping the new value produced by the operator</p>
+            <p class="fragment">If the wrapped value is <em>compound</em> the Functor applies the operator to each indidual value instead</p>
+            <p class="fragment">All this is just a fancy way of saying that Functor is just an object that has a <em>map</em> method</p>
           </section>
 
           <section>
             <h4><code>filter()</code></h4>
+
+            <p><code>Array.prototype.filter</code> is a <em>HoF</em> that traverses the list applying the provided <em>predicate function</em> to each item</p>
+            <p class="fragment">and produces a <em>new array</em> with the values of which the predicate function returned <em>truthy</em></p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const badDiet = ['&#x1F34C', '&#x1F36B', '&#x1F34E', '&#x1F36B', '&#x1F955', '&#x1F36B', '&#x1F349', '&#x1F36B'];
+
+              const goodDiet = badDiet.filter(food => !food.includes('&#x1F36B'));
+
+              console.log(goodDiet); // ['&#x1F34C', '&#x1F34E', '&#x1F955', '&#x1F349']
+            </code></pre>
           </section>
 
           <section>
@@ -1075,6 +1142,20 @@
 
           <section>
             <h4><code>reduce()</code></h4>
+            <p><code>Array.prototype.reduce</code> is a <em>HoF</em> that traverses the list applying the provided <em>reducer function</em> to the previous returned value and current value</p>
+            <p class="fragment">And produces whatever the last reducer call returns</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const people = ['&#x1F469', '&#x1F467', '&#x1F468', '&#x1F466'];
+
+              const family = people.reduce((str, person) => (
+                str === '' ? 
+                  person :
+                  str + '\u200D' + person 
+              ), '' /* <- initial value */);
+
+              console.log(family); // '&#x1F469&zwj;&#x1F467&zwj;&#x1F468&zwj;&#x1F466'
+            </code></pre>
           </section>
 
           <section>
@@ -1105,6 +1186,147 @@
           <section>
             <h3>Recursion</h3>
             <h4 class="fragment">(or recursion (or recursion...))</h4>
+          </section>
+
+          <section>
+            <p>Recursion is when a function <em>calls itself</em> until a <em>base condition</em> is satisfied</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const fib = n => 
+                n <= 1 ? 
+                  n :
+                  fib(n - 2) + fib(n - 1);
+
+              fib(10); // 55
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Declarative iterations</h4>
+
+            <p>Although it may be <em>less performant</em>, expressing repetition with recursion is usually more readable because of it's <em>declarative</em> nature</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const sum = (...values) => {
+                let total = 0;
+                for(let i = 0; i < values.length; i++) {
+                  total += values[i];
+                }
+                return total;
+              };
+
+              // vs
+
+              const sum = (firstValue, ...otherValues) => 
+                otherValues.length === 0 ?
+                  firstValue :
+                  firstValue + sum(...otherValues);
+            </code></pre>
+          </section>
+
+          <section>
+            <blockquote>
+              "Loops may achieve a performance gain for your program. Recursion may achieve a performance gain for your programmer. Choose which is more important in your situation!"
+              <br>
+              - <a href="http://stackoverflow.com/questions/72209/recursion-or-iteration#answer-72694">Leigh Caldwell</a>
+            </blockquote>
+          </section>
+
+          <section>
+            <h4>Divide and Conquer</h4>
+
+            <p>An common strategy to apply when creating a recursive functions is taking the <em>divide and conquer</em> approach:</p>
+            <ul>
+              <li class="fragment">Treat every list as a <em>pair</em> containg the <em>first value</em> and a list with the <em>rest of the values</em></li>
+              <li class="fragment">Define the <em>base condition</em></li>
+              <li class="fragment">Define logic around the <em>first value</em></li>
+              <li class="fragment">Apply the function itself to the <em>rest of the values</em></li>
+            </ul>
+          </section>
+
+          <section>
+            <h4>Divide and Conquer</h4>
+
+            <p>Iterative:</p>
+
+            <pre><code class="javascript" data-trim>
+              const map = (arr, fn) => {
+                const newArr = [];
+
+                for (let i = 0; i < arr.length; i++) {
+                  newArr.push(fn(arr[i]));
+                }
+
+                return newArr;
+              };
+            </code></pre>
+
+            <div class="fragment">
+              <p>Recursive:</p>
+
+              <pre><code class="javascript" data-trim style="max-height: 600px">
+                const map = ([firstVal, ...rest], fn) => 
+                  firstVal === undefined ? 
+                    [] :
+                    [fn(firstVal), ...map(rest, fn)];
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h4><code>Stack Overflow</code></h4>
+
+            <p>The function stack is a limited resource</p>
+            <p class="fragment">If the base condition of a recursive function is not met until the environment <em>runs out of stack frames</em></p>
+            <p class="fragment">The program/application will <em>crash and burn</em></p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              // If list has something like 200 items or more,
+              // Stack Overflow!
+              const values = recursiveMap(bigList, item => item.value);
+            </code></pre>
+
+            <p class="fragment">Always ensure the base condition will be satisfied before that or refactor the function to use the benefits of <em>tail call optimization</em></p>
+          </section>
+
+          <section>
+            <h4>Tail call optimization</h4>
+
+            <p>Tail call is when a function call is the <em>very last thing evaluated</em> inside a function</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const foo = () => {
+                const value = 'tail call';
+
+                return bar(value); // <- bar is being tail called
+              };
+            </code></pre>
+
+            <p class="fragment">When this happens the compiler can optimize the runtime by <em>reusing the last stack frame</em></p>
+          </section>
+
+          <section>
+            <h4>Tail call optimization</h4>
+
+            <p>By refactoring the recursive map utility from:</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const map = ([firstVal, ...rest], fn) => 
+                firstVal === undefined ? 
+                  [] :
+                  [fn(firstVal), ...map(rest, fn)];
+            </code></pre>
+
+            <p class="fragment">To use <em>TCO:</em></p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const map = ([firstVal, ...rest], fn, result = []) => 
+                firstVal === undefined ? 
+                  result :
+                  map(rest, fn, [...result, fn(firstVal)]);
+            </code></pre>
+
+            <p class="fragment"><code>map()</code> will now support mapping over lists of any size</p>
           </section>
         </section>
 
