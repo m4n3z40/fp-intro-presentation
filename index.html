@@ -1317,14 +1317,16 @@
                   [fn(firstVal), ...map(rest, fn)];
             </code></pre>
 
-            <p class="fragment">To use <em>TCO:</em></p>
+            <div class="fragment">
+              <p>To use <em>TCO:</em></p>
 
-            <pre class="fragment"><code class="javascript" data-trim>
-              const map = ([firstVal, ...rest], fn, result = []) => 
-                firstVal === undefined ? 
-                  result :
-                  map(rest, fn, [...result, fn(firstVal)]);
-            </code></pre>
+              <pre><code class="javascript" data-trim>
+                const map = ([firstVal, ...rest], fn, result = []) => 
+                  firstVal === undefined ? 
+                    result :
+                    map(rest, fn, [...result, fn(firstVal)]);
+              </code></pre>
+            </div>
 
             <p class="fragment"><code>map()</code> will now support mapping over lists of any size</p>
           </section>
