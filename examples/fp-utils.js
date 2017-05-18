@@ -44,9 +44,9 @@ const isSomething = not(isNothing);
 
 const nothing = (value = null) => ({
     [nothingSymbol]: true,
-    map: fn => this,
-    flatMap: fn => this,
-    apply: monad => this,
+    map: nothing,
+    flatMap: nothing,
+    apply: nothing,
     getValue: () => null
 });
 
@@ -65,20 +65,20 @@ const maybe = (value = null) => ({
 });
 
 const left = (valueLeft = null, valueRight = null) => ({
-    map: (fnLeft, fnRight) => fnLeft ? left(fnLeft(valueLeft)) : this,
-    flatMap: (fnLeft, fnRight) => fnLeft ? fnLeft(valueLeft) : this,
-    apply: (monadLeft, monadRight) => monadLeft ? monadLeft.map(valueLeft) : this,
+    map: (fnLeft, fnRight) => fnLeft ? left(fnLeft(valueLeft)) : left(valueLeft, valueRight),
+    flatMap: (fnLeft, fnRight) => fnLeft ? fnLeft(valueLeft) :  left(valueLeft, valueRight),
+    apply: (monadLeft, monadRight) => monadLeft ? monadLeft.map(valueLeft) :  left(valueLeft, valueRight),
     whenLeft: (fn) => left(fn(valueLeft)),
-    whenRight: (fn) => this,
+    whenRight: (fn) =>  left(valueLeft, valueRight),
     getLeft: () => valueLeft,
     getRight: () => valueRight
 });
 
 const right = (valueLeft = null, valueRight = null) => ({
-    map: (fnLeft, fnRight) => fnRight ? right(fnRight(valueRight)) : this,
-    flatMap: (fnLeft, fnRight) => fnRight ? fnRight(valueRight) : this,
-    apply: (monadLeft, monadRight) => monadRight ? monadRight.map(valueRight) : this,
-    whenLeft: (fn) => this,
+    map: (fnLeft, fnRight) => fnRight ? right(fnRight(valueRight)) : right(valueLeft, valueRight),
+    flatMap: (fnLeft, fnRight) => fnRight ? fnRight(valueRight) : right(valueLeft, valueRight),
+    apply: (monadLeft, monadRight) => monadRight ? monadRight.map(valueRight) : right(valueLeft, valueRight),
+    whenLeft: (fn) => right(valueLeft, valueRight),
     whenRight: (fn) => right(fn(valueRight)),
     getLeft: () => valueLeft,
     getRight: () => valueRight

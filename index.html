@@ -153,11 +153,6 @@
         </section>
 
         <section>
-          <h3>Readability Evolution</h3>
-          <img src="img/fp-evolution.png" alt="">
-        </section>
-
-        <section>
           <h3>How to FP?</h3>
           <p class="fragment">Some mandatory topics:</p>
           <ul>
@@ -900,7 +895,7 @@
               const loggedUser = logIn(anonymousUser);
 
               console.log(loggedUser.loggedIn); // true
-              console.log(anonymous.loggedIn); // true
+              console.log(anonymousUser.loggedIn); // true
             </code></pre>
           </section>
 
@@ -921,7 +916,7 @@
               const loggedUser = logIn(anonymousUser);
 
               console.log(loggedUser.loggedIn); // true
-              console.log(anonymous.loggedIn); // false
+              console.log(anonymousUser.loggedIn); // false
             </code></pre>
 
             <p class="fragment">Pattern: copy objects and <em>mutate the copy</em></p>
@@ -1237,7 +1232,7 @@
 
             <p>An common strategy to apply when creating a recursive functions is taking the <em>divide and conquer</em> approach:</p>
             <ul>
-              <li class="fragment">Treat every list as a <em>pair</em> containg the <em>first value</em> and a list with the <em>rest of the values</em></li>
+              <li class="fragment">Treat every list as a <em>pair</em> containing the <em>first value</em> and a list with the <em>rest of the values</em></li>
               <li class="fragment">Define the <em>base condition</em></li>
               <li class="fragment">Define logic around the <em>first value</em></li>
               <li class="fragment">Apply the function itself to the <em>rest of the values</em></li>
@@ -1353,11 +1348,322 @@
             <h3>Monads</h3>
             <h4 class="fragment">(or the thing that, once understood, you won't be able to explain)</h4>
           </section>
+
+          <section>
+            <p>But first, some boring topics that won't be covered:</p>
+            <p><small>(but you should at some point)</small></p>
+
+            <ul>
+              <li class="fragment">Abstract Algebra</li>
+              <li class="fragment">Type Theory</li>
+              <li class="fragment">Category Theory</li>
+            </ul>
+
+            <p class="fragment">Some people say these fundamental topics are <em>mandatory</em> to start FPing</p>
+            <p class="fragment"><em>I disaggree.</em> But when you feel ready to dive into the theory behind FP, it's' recommended you do so</p>
+          </section>
+
+          <section>
+            <h4>Revisiting Functors</h4>
+
+            <p class="fragment">Meet <em>something</em> and <em>nothing</em>:</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const something = (value) => ({
+                map: fn => something(fn(value))
+              });
+
+              const nothing = () => ({
+                map: nothing
+              });
+            </code></pre>
+
+            <p class="fragment">
+              <small>Note: the names of this Functor implementations <em>vary a lot</em></small>
+              <br>
+              <small>(Some/None, Just/Nothing, Something/Empty...)</small>
+            </p>
+            <p class="fragment">
+              <small>That happens because Functors, like any other FP <em>type</em>, is like a <em>loose interface</em></small>
+              <br>
+              <small>Implementations must respect the <em>type laws</em> but their names are not enforced</small>
+            </p>
+          </section>
+          
+          <section>
+            <h4>Revisiting Functors</h4>
+
+            <p>something is useful</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const getUser = userId => {
+                const user = repository.findUserById(userId);
+
+                return user ? something(user) : nothing();
+              }
+              // now we can write 
+              // beautiful, idiomatic, declarative code
+              getUser(existingId) // User exists
+                .map(attachPermissions(permissions))
+                .map(attachOrders(orders))
+                .map(showProfile(template));
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Revisiting Functors</h4>
+
+            <p>nothing is useful</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const getUser = userId => {
+                const user = repository.findUserById(userId);
+
+                return user ? something(user) : nothing();
+              }
+              // now we can write 
+              // beautiful, idiomatic, declarative code
+              getUser(nonExistantId) // User is not found
+                .map(attachPermissions(permissions))
+                .map(attachOrders(orders))
+                .map(showProfile(profileTemplate));
+            </code></pre>
+
+            <p class="fragment">
+              It's the same exact code, but nothing happens. Not even an <em>exception</em>!
+              <br>
+              This allows easier and safer <em>handling of errors</em> without sacrificing readability
+            </p>
+          </section>
+
+          <section>
+            <h4>Revisiting Functors</h4>
+
+            <p>handling branches/errors</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const something = (value) => ({
+                map: fn => something(fn(value)),
+                orError: nothing
+              });
+
+              const nothing = () => ({
+                map: nothing,
+                orError: something
+              });
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Revisiting Functors</h4>
+
+            <p>handling branches/errors</p>
+
+            <pre class="fragment"><code class="javascript" data-trim style="max-height: 600px">
+              const getUser = userId => {
+                const user = repository.findUserById(userId);
+
+                return user ? something(user) : nothing();
+              }
+
+              // now we can write 
+              // beautiful, idiomatic, declarative code
+              getUser(nonExistantId) // User is not found
+                .map(attachPermissions(permissions))
+                .map(attachOrders(orders))
+                .map(showProfile(profileTemplate))
+                // error branch executed when is nothing
+                .orError(new Error('User not found'))
+                .map(showError(errorTemplate));
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Revisiting Functors</h4>
+
+            <p>Containing containers</p>
+
+            <pre class="fragment"><code class="javascript" data-trim style="max-height: 600px">
+              const attachPermissions = permissions => user =>
+                permissions ?
+                  something(user.setPermissions(permissions)) :
+                  nothing();
+
+              const attachOrders = orders => user =>
+                orders ?
+                  something(user.setOrders(orders)) :
+                  nothing();
+
+              getUser(userId)
+                .map(attachPermissions(permissions))// something(something(user))
+                .map(attachOrders(orders))// Error: setOrders is not a function
+                .map(showProfile(profileTemplate))
+                .orError(new Error('User not found'))
+                .map(showError(errorTemplate));
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Monads to the rescue</h4>
+
+            <p class="fragment">Much like the Functor, the Monad has a utility method for applying an <em>operator function</em> to it's wrapped value</p>
+            <p class="fragment">but unlike the Functors <em><code>map()</code></em> utility, it does <em>not</em> return a new Monad.</p>
+            <p class="fragment">This utility function has many names: <code>bind()</code>, <code>chain()</code> and <em><code>flatMap()</code></em></p>
+          </section>
+
+          <section>
+            <h4>Monads to the rescue</h4>
+
+            <p>Unboxing a box</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const something = (value) => ({
+                map: fn => something(fn(value)),
+                flatMap: fn => fn(value),
+                orError: nothing
+              });
+
+              const nothing = () => ({
+                map: nothing,
+                flatMap: nothing,
+                orError: something
+              });
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Monads to the rescue</h4>
+
+            <p>Unboxing a box</p>
+
+            <pre class="fragment"><code class="javascript" data-trim style="max-height: 600px">
+              const attachPermissions = permissions => user =>
+                permissions ?
+                  something(user.setPermissions(permissions)) :
+                  nothing();
+
+              const attachOrders = orders => user =>
+                orders ?
+                  something(user.setOrders(orders)) :
+                  nothing();
+
+              getUser(userId)
+                .flatMap(attachPermissions(permissions)) // something(user)
+                .flatMap(attachOrders(orders)) // // something(user)
+                .map(showProfile(profileTemplate))
+                .orError(new Error('User not found'))
+                .map(showError(errorTemplate));
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>You are using monads already</h4>
+
+            <p class="fragment">Let's create a <em>fictional</em> monad that wraps a <em>future value</em></p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const future = futureValue => ({
+                map: fn => future(fn(futureValue)),
+                flatMap: fn => fn(futureValue)
+              });
+            </code></pre>
+
+            <div class="fragment">
+              <p>That can be used like this:</p>
+
+              <pre><code class="javascript" data-trim>
+                future(asyncGetUser(userId))
+                  .flatMap(asyncAttatchPermissions(userId))
+                  .flatMap(asyncAttatchOrders(userId))
+                  .map(showProfile(profileTemplate));
+              </code></pre>
+            </div>
+          </section>
+
+          <section>
+            <h4>You are using monads already</h4>
+
+            <p>But <em><code>map()</code></em> and <em><code>flatMap()</code></em> are not very meaningful when dealing with future values</p>
+
+            <p class="fragment">What if we <em>merged and renamed</em> them?</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const future = futureValue => ({
+                then: fn => typeof futureValue.then === 'function' ?
+                  futureValue.then(fn) :
+                  future(fn(futureValue))
+              });
+            </code></pre>
+
+            <div class="fragment">
+              <p>Now it reads a lot better:</p>
+
+              <pre><code class="javascript" data-trim>
+                future(asyncGetUser(userId))
+                  .then(asyncAttatchPermissions(userId))
+                  .then(asyncAttatchOrders(userId))
+                  .then(showProfile(profileTemplate));
+              </code></pre>
+            </div>
+          </section>
+
+           <section>
+            <h4>You are using monads already</h4>
+
+            <p>Feeling a déjà vu?</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              Promise.resolve(asyncGetUser(userId))
+                .then(asyncAttatchPermissions(userId))
+                .then(asyncAttatchOrders(userId))
+                .then(showProfile(profileTemplate));
+            </code></pre>
+
+            <p class="fragment">Yes! Promise is a Monad!</p>
+          </section>
+
+          <section>
+            <h4>Feel betrayed?</h4>
+
+            <img src="img/betrayed-cat.gif" alt="Gif about a betrayed cat" style="width: 400px">
+          </section>
+        </section>
+
+        <section>
+          <h3>Developer Evolution</h3>
+          <img src="img/fp-evolution.png" alt="">
         </section>
 
         <section>
           <h3>What to FP?</h3>
           <img class="fragment" src="img/fp-all-the-things.jpg" alt="FP ALL THE THINGS!!!">
+        </section>
+
+        <section>
+          <h3>JS FP libs</h3>
+
+          <ul>
+            <li><a href="https://github.com/lodash/lodash/wiki/FP-Guide">lodash/fp</a> - Functional utilities on top of lodash</li>
+            <li><a href="http://ramdajs.com/">Ramda</a> - Functional utilities</li>
+            <li><a href="http://functionaljs.com/">functional.js</a> - Functional utilities</li>
+            <li><a href="http://folktalejs.org/">Folktale</a> - Suite of functional libraries</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Resources</h3>
+
+          <ul>
+            <li><a href="https://github.com/getify/functional-light-js">Functional Light JS (by getify)</a> - Great FP book, greatly inspired this talk</li>
+            <li><a href="https://github.com/MostlyAdequate/mostly-adequate-guide">Mostly adequate guide to FP</a> - Awesome FP book, dives into theory more</li>
+            <li><a href="https://leanpub.com/javascriptallongesix">JavaScript Allongé</a> - A must read for every JS developer</li>
+            <li><a href="https://github.com/stoeffel/awesome-fp-js">Awesome FP JS</a> - List of resources about FP in JS</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Thank you!</h1>
+          <img src="img/im-out.gif" alt="I'm out!">
         </section>
       </div>
     </div>
