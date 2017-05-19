@@ -25,15 +25,15 @@
     <div class="reveal">
       <div class="slides">
         <section>
-          <h1>Introduction to FP</h1>
-          <h2>(w/ Javascript)</h2>
+          <img src="img/lambda.png" alt="Lambda letter" style="border-radius: 100%;">
+          <h2>Introduction to FP</h1>
+          <h4>(w/ Javascript)</h2>
         </section>
 
         <section>
           <blockquote>
-            "A monad is just a monoid in the category of endofunctors, what's the problem?"
+            "A monad is just a monoid in the category of endofunctors..."
           </blockquote>
-          <p>- Functional Programmer, Asshole</p>
         </section>
         
         <section>
@@ -42,82 +42,6 @@
         
         <section>
           <h3>Why to FP?</h3>
-        </section>
-
-        <section>
-          <section>
-            <h3>But first, an experiment...</h3>
-            <h4>What this code is doing?</h4>
-          </section>
-
-          <section>
-            <pre>
-              <code class="javascript" data-trim style="max-height: 756px; margin: -40px;">
-                const words = [
-                    'The', 'quick', 'brown', 'fox,', 'jumps', 'over', 
-                    'the', 'lazy', 'dog.', '- It', 'was', 'a', 'german', 
-                    'shepherd!'
-                ];
-                let result = false;
-
-                for (let i = 0; i < words.length; i++) {
-                    words[i] = words[i].replace(/[ -_:;.,!\?]/g, '');
-                    
-                    if (words[i].length >= 3 && words[i].length <= 6) {
-                        words[i] = words[i].toUpperCase()
-                          .split('').reverse().join('');
-
-                        if (words[i] === 'GOD') {
-                            result = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (result) console.log('Found GOD...');
-
-                if (words[0] !== 'The') console.log('...and the devil');
-              </code>
-            </pre>
-          </section>
-
-          <section>
-            <h4>And this one?</h4>
-          </section>
-          
-          <section>
-            <pre><code class="javascript" data-trim style="max-height: 756px; margin: -20px;">
-              const words = [
-                  'The', 'quick', 'brown', 'fox,', 'jumps', 'over', 
-                  'the', 'lazy', 'dog.', '- It', 'was', 'a', 'german', 
-                  'shepherd!'
-              ];
-              const removeInvalidChars = word => word.replace(/[ -_:;.,!\?]/g, '');
-              const enoughChars = word => word.length >= 3;
-              const notManyChars = word => word.length <= 6;
-              const canContainGod = and(enoughChars, notManyChars);
-              const toUpperCase = word => word.toUpperCase();
-              const reverseStr = word => word.split('').reverse().join('');
-              const toBibleCode = compose(reverseStr, toUpperCase);
-              const isGod = word => word === 'GOD';
-
-              const result = words
-                  .map(removeInvalidChars)
-                  .filter(canContainGod)
-                  .map(toBibleCode)
-                  .some(isGod);
-
-              if (result) console.log('Found GOD...');
-
-              if (words[0] !== 'The') console.log('...and the devil');
-            </code></pre>
-          </section>
-
-          <section>
-            <h3>Answer:</h3>
-            <h4 class="fragment">(Almost) the same thing</h4>
-            <p class="fragment">Challenge: Can you spot a difference between both outputs?</p>
-          </section>
         </section>
         
         <section>
@@ -191,7 +115,7 @@
           </section>
 
           <section>
-            <p>The majority of patterns and tools around FP requires functions to be treated as first-class citizens</p>
+            <p>The majority of patterns and tools around FP requires functions to be treated as <em>first-class citizens</em></p>
             <p class="fragment">Which means they can:</p>
           </section>
 
@@ -343,7 +267,7 @@
           <section>
             <h3>Closures</h3>
 
-            <p>A closure is a function that refers to "free variables" (variables defined in parent scopes)</p>
+            <p>A closure is a function that refers to <em>"free variables"</em> (variables defined in parent scopes)</p>
             <p class="fragment">In other words, it's a function that <em>"remembers"</em> the state/environment where it was created</p>
           </section>
           
@@ -430,7 +354,7 @@
           </section>
 
           <section>
-            <h3>Unpure Functions</h3>
+            <h3>Impure Functions</h3>
 
             <pre><code class="javascript" data-trim>
               // I/O operation
@@ -763,6 +687,7 @@
             <p class="fragment">and returns another function that applies each function from <em>right to left</em>, so:</p>
             <pre class="fragment"><code class="javascript" data-trim>
               // This
+              const transformData = compose(freeze, enhance, escape);
               transformData(...args);
 
               // is the same as this
@@ -1630,6 +1555,82 @@
         </section>
 
         <section>
+          <section>
+            <h3>Imperative vs Declarative</h3>
+            <h4>What this code is doing?</h4>
+          </section>
+
+          <section>
+            <pre>
+              <code class="javascript" data-trim style="max-height: 756px; margin: -40px;">
+                const words = [
+                    'The', 'quick', 'brown', 'fox,', 'jumps', 'over', 
+                    'the', 'lazy', 'dog.', '- It', 'was', 'a', 'german', 
+                    'shepherd!'
+                ];
+                let result = false;
+
+                for (let i = 0; i < words.length; i++) {
+                    words[i] = words[i].replace(/[ -_:;.,!\?]/g, '');
+                    
+                    if (words[i].length >= 3 && words[i].length <= 6) {
+                        words[i] = words[i].toUpperCase()
+                          .split('').reverse().join('');
+
+                        if (words[i] === 'GOD') {
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (result) console.log('Found GOD...');
+
+                if (words[0] !== 'The') console.log('...and the devil');
+              </code>
+            </pre>
+          </section>
+
+          <section>
+            <h4>And this one?</h4>
+          </section>
+          
+          <section>
+            <pre><code class="javascript" data-trim style="max-height: 756px; margin: -20px;">
+              const words = [
+                  'The', 'quick', 'brown', 'fox,', 'jumps', 'over', 
+                  'the', 'lazy', 'dog.', '- It', 'was', 'a', 'german', 
+                  'shepherd!'
+              ];
+              const removeInvalidChars = word => word.replace(/[ -_:;.,!\?]/g, '');
+              const enoughChars = word => word.length >= 3;
+              const canContainGod = word => word.length >= 3 && word.length <= 6;
+              const toUpperCase = word => word.toUpperCase();
+              const reverseStr = word => word.split('').reverse().join('');
+              const toBibleCode = compose(reverseStr, toUpperCase);
+              const isGod = word => word === 'GOD';
+              const logIf = (condition, str) = condition && console.log(str);
+
+              const result = words
+                  .map(removeInvalidChars)
+                  .filter(canContainGod)
+                  .map(toBibleCode)
+                  .some(isGod);
+
+              logIf(result === true, 'Found GOD...');
+
+              logIf(words[0] !== 'The', '...and the devil');
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Answer:</h3>
+            <h4 class="fragment">(Almost) the same thing</h4>
+            <p class="fragment">Challenge: Can you spot a difference between both outputs?</p>
+          </section>
+        </section>
+
+        <section>
           <h3>Developer Evolution</h3>
           <img src="img/fp-evolution.png" alt="">
         </section>
@@ -1662,7 +1663,19 @@
         </section>
 
         <section>
-          <h1>Thank you!</h1>
+          <h3>Contacts</h3>
+
+          <ul>
+            <li>Linkedin: <a href="https://www.linkedin.com/in/allanbaptista/">/in/allanbaptista</a></li>
+            <li>Github: <a href="https://github.com/m4n3z40">m4n3z40</a></li>
+            <li>Skype: <a href="skype://abaptista.daitan">abaptista.daitan</a></li>
+            <li>E-mail: <a href="maito://abaptista@daitangroup.com">abaptista@daitangroup.com</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Thanks</h3>
+          <p>I'm out</p>
           <img src="img/im-out.gif" alt="I'm out!">
         </section>
       </div>
@@ -1677,9 +1690,6 @@
       // - https://github.com/hakimel/reveal.js#dependencies
       Reveal.initialize({
         dependencies: [
-          { src: 'plugin/markdown/marked.js' },
-          { src: 'plugin/markdown/markdown.js' },
-          { src: 'plugin/notes/notes.js', async: true },
           { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
         ]
       });
