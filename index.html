@@ -1510,26 +1510,36 @@
 
             <p>But <em><code>map()</code></em> and <em><code>flatMap()</code></em> are not very meaningful when dealing with future values</p>
 
-            <p class="fragment">What if we <em>merged and renamed</em> them?</p>
+            <p class="fragment">What if we <em>"merged" and renamed</em> them?</p>
 
             <pre class="fragment"><code class="javascript" data-trim>
               const future = futureValue => ({
-                then: fn => typeof futureValue.then === 'function' ?
-                  futureValue.then(fn) :
-                  future(fn(futureValue))
+                then: fn => {
+                  const nextFutureValue = fn(futureValue);
+                  const isFutureMonad = (
+                    nextFurureValue &&
+                    typeof nextFutureValue.then === 'function'
+                  );
+
+                  return isFutureMonad ?
+                    nextFutureValue :
+                    future(nextFutureValue);
+                }
               });
             </code></pre>
+          </section>sss
 
-            <div class="fragment">
-              <p>Now it reads a lot better:</p>
+          <section>
+            <h4>You are using monads already</h4>
 
-              <pre><code class="javascript" data-trim>
-                future(asyncGetUser(userId))
-                  .then(asyncAttatchPermissions(userId))
-                  .then(asyncAttatchOrders(userId))
-                  .then(showProfile(profileTemplate));
-              </code></pre>
-            </div>
+            <p>Now it reads a lot better:</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              future(asyncGetUser(userId))
+                .then(asyncAttatchPermissions(userId))
+                .then(asyncAttatchOrders(userId))
+                .then(showProfile(profileTemplate));
+            </code></pre>
           </section>
 
            <section>
