@@ -60,25 +60,28 @@
         
         <section>
           <h3>Why to FP?</h3>
-          <p class="fragment">Because it allows us to write a more...</p>
+          <p class="fragment">Because FP "laws" and tools enables us to write a more:</p>
           <ul>
-            <li class="fragment">...reusable code</li>
-            <li class="fragment">...testable code</li>
-            <li class="fragment">...declarative code</li>
-            <li class="fragment">...readable code</li>
+            <li class="fragment">Readable code</li>
+            <li class="fragment">Declarative code</li>
+            <li class="fragment">Reusable code</li>
+            <li class="fragment">Testable code</li>
           </ul>
-          <p class="fragment">In general, a more <strong>reliable</strong> & <strong>maintainable</strong> code in the long term</p>
+          <p class="fragment">In general, a more <em>reliable</em> & <em>maintainable</em> code in the long term</p>
         </section>
 
         <section>
           <h3>Readability Curve</h3>
-          <img src="img/readability-curve.png" alt="">
-          <p><small>Source: <a href="https://github.com/getify/Functional-Light-JS/blob/master/ch1.md">https://github.com/getify/Functional-Light-JS/blob/master/ch1.md</a></small></p>
+          <p>But the journey has it's bumps</p>
+          <div class="fragment">
+            <img src="img/readability-curve.png" alt="">
+            <p><small>Source: <a href="https://github.com/getify/Functional-Light-JS/blob/master/ch1.md">https://github.com/getify/Functional-Light-JS/blob/master/ch1.md</a></small></p>
+          </div>
         </section>
 
         <section>
-          <h3>How to FP?</h3>
-          <p class="fragment">Some mandatory topics:</p>
+          <h3>A Practical Intro to FP</h3>
+          <p class="fragment">We'll go over some "mandatory" concepts:</p>
           <ul>
             <li class="fragment">First Class Functions</li>
             <li class="fragment">High-Order Functions & Closures</li>
@@ -88,14 +91,14 @@
             <li class="fragment">Value Immutability</li>
             <li class="fragment">Array Operations</li>
             <li class="fragment">Recursion</li>
-            <li class="fragment">Monads</li>
+            <li class="fragment">Monads Basics</li>
           </ul>
         </section>
 
         <section>
           <section>
-            <h3>How to FP?</h3>
-            <p>Some mandatory topics:</p>
+            <h3>A Practical Intro to FP</h3>
+            <p>Some "mandatory" concepts:</p>
             <ul>
               <li style="color: crimson">First Class Functions</li>
               <li>High-Order Functions & Closures</li>
@@ -105,7 +108,7 @@
               <li>Value Immutability</li>
               <li>Array Operations</li>
               <li>Recursion</li>
-              <li>Monads</li>
+              <li>Monads Basics</li>
             </ul>
           </section>
           
@@ -199,8 +202,8 @@
 
         <section>
           <section>
-            <h3>How to FP?</h3>
-            <p>Some mandatory topics:</p>
+            <h3>A Practical Intro to FP</h3>
+            <p>Some "mandatory" concepts:</p>
             <ul>
               <li>First Class Functions</li>
               <li style="color: crimson">High-Order Functions & Closures</li>
@@ -210,7 +213,7 @@
               <li>Value Immutability</li>
               <li>Array Operations</li>
               <li>Recursion</li>
-              <li>Monads</li>
+              <li>Monads Basics</li>
             </ul>
           </section>
 
@@ -301,8 +304,8 @@
 
         <section>
           <section>
-            <h3>How to FP?</h3>
-            <p>Some mandatory topics:</p>
+            <h3>A Practical Intro to FP</h3>
+            <p>Some "mandatory" concepts:</p>
             <ul>
               <li>First Class Functions</li>
               <li>High-Order Functions & Closures</li>
@@ -312,7 +315,7 @@
               <li>Value Immutability</li>
               <li>Array Operations</li>
               <li>Recursion</li>
-              <li>Monads</li>
+              <li>Monads Basics</li>
             </ul>
           </section>
 
@@ -381,8 +384,8 @@
 
         <section>
           <section>
-            <h3>How to FP?</h3>
-            <p>Some mandatory topics:</p>
+            <h3>A Practical Intro to FP</h3>
+            <p>Some "mandatory" concepts:</p>
             <ul>
               <li>First Class Functions</li>
               <li>High-Order Functions & Closures</li>
@@ -392,7 +395,7 @@
               <li>Value Immutability</li>
               <li>Array Operations</li>
               <li>Recursion</li>
-              <li>Monads</li>
+              <li>Monads Basics</li>
             </ul>
           </section>
 
@@ -565,9 +568,17 @@
           <section>
             <h4>Currying</h4>
 
-            <p class="fragment">It's a <i>special</i> kind of partial application that only applies the actual function once it's gathered all parameters it expects</p>
+            <p class="fragment">It's creating a function that only executes it's actual logic once it's <em>gathered all parameters</em> it expects</p>
 
-            <pre class="fragment"><code class="javascript" data-trim>
+            <p class="fragment">When a <em>curried function</em> is applied to less arguments than it's <em>arity</em> it returns another function</p>
+
+            <p class="fragment">And it <em>keeps</em> returning another function until all arguments are provided</p>
+          </section>
+
+          <section>
+            <h4>Currying</h4>
+
+            <pre><code class="javascript" data-trim>
               const curriedFullName = preferedTreatment =>
                 firstName =>
                     lastName =>
@@ -629,8 +640,8 @@
 
         <section>
           <section>
-            <h3>How to FP?</h3>
-            <p>Some mandatory topics:</p>
+            <h3>A Practical Intro to FP</h3>
+            <p>Some "mandatory" concepts:</p>
             <ul>
               <li>First Class Functions</li>
               <li>High-Order Functions & Closures</li>
@@ -640,7 +651,7 @@
               <li>Value Immutability</li>
               <li>Array Operations</li>
               <li>Recursion</li>
-              <li>Monads</li>
+              <li>Monads Basics</li>
             </ul>
           </section>
 
@@ -712,9 +723,17 @@
                     fns[fns.length - 1](...args)
                   );
             </code></pre>
+          </section>
 
-            <p class="fragment">Note that all functions besides the first one to be applied are expected to be <em>unary</em></p>
+          <section>
+            <h4>Function composition and arity</h4>
+
+            <p>Note that all functions besides the first one to be applied are expected to be <em>unary</em></p>
             <p class="fragment">as it's not possible to return more the one value from a function</p>
+            <p class="fragment">
+              By combining the concepts of <em>function composition</em>, <em>arity</em> and <em>input management</em> 
+              one can build very complex logic in a very <em>declarative</em> way
+            </p>
           </section>
 
           <section>
@@ -751,8 +770,8 @@
 
         <section>
           <section>
-            <h3>How to FP?</h3>
-            <p>Some mandatory topics:</p>
+            <h3>A Practical Intro to FP</h3>
+            <p>Some "mandatory" concepts:</p>
             <ul>
               <li>First Class Functions</li>
               <li>High-Order Functions & Closures</li>
@@ -762,7 +781,7 @@
               <li style="color: crimson">Value Immutability</li>
               <li>Array Operations</li>
               <li>Recursion</li>
-              <li>Monads</li>
+              <li>Monads Basics</li>
             </ul>
           </section>
 
@@ -947,8 +966,8 @@
 
         <section>
           <section>
-            <h3>How to FP?</h3>
-            <p>Some mandatory topics:</p>
+            <h3>A Practical Intro to FP</h3>
+            <p>Some "mandatory" concepts:</p>
             <ul>
               <li>First Class Functions</li>
               <li>High-Order Functions & Closures</li>
@@ -958,7 +977,7 @@
               <li>Value Immutability</li>
               <li style="color: crimson">Array Operations</li>
               <li>Recursion</li>
-              <li>Monads</li>
+              <li>Monads Basics</li>
             </ul>
           </section>
 
@@ -1088,8 +1107,8 @@
 
         <section>
           <section>
-            <h3>How to FP?</h3>
-            <p>Some mandatory topics:</p>
+            <h3>A Practical Intro to FP</h3>
+            <p>Some "mandatory" concepts:</p>
             <ul>
               <li>First Class Functions</li>
               <li>High-Order Functions & Closures</li>
@@ -1099,7 +1118,7 @@
               <li>Value Immutability</li>
               <li>Array Operations</li>
               <li style="color: crimson">Recursion</li>
-              <li>Monads</li>
+              <li>Monads Basics</li>
             </ul>
           </section>
 
@@ -1194,6 +1213,31 @@
           </section>
 
           <section>
+            <h4>Divide and Conquer</h4>
+
+            <p>Note that this technique doesn't only work with lists. Lists are just easier to wrap you head around the concept</p>
+
+            <p class="fragment">This approach can be applied to almost <em>anything</em></p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const iterativeRangeSum = (start, end) => {
+                let result = start;
+                for (let i = start; i < end; i++) {
+                  result += i;
+                }
+                return result;
+              }
+
+              // vs
+
+              const recursiveRangeSum = (start, end) => 
+                start === end ?
+                  0 :
+                  start + recursiveRangeSum(start, end - 1);
+            </code></pre>
+          </section>
+
+          <section>
             <h4><code>Stack Overflow</code></h4>
 
             <p>The function stack is a limited resource</p>
@@ -1254,8 +1298,8 @@
 
         <section>
           <section>
-            <h3>How to FP?</h3>
-            <p>Some mandatory topics:</p>
+            <h3>A Practical Intro to FP</h3>
+            <p>Some "mandatory" concepts:</p>
             <ul>
               <li>First Class Functions</li>
               <li>High-Order Functions & Closures</li>
@@ -1265,12 +1309,12 @@
               <li>Value Immutability</li>
               <li>Array Operations</li>
               <li>Recursion</li>
-              <li style="color: crimson">Monads</li>
+              <li style="color: crimson">Monads Basics</li>
             </ul>
           </section>
 
           <section>
-            <h3>Monads</h3>
+            <h3>Monads Basics</h3>
             <h4 class="fragment">(or the thing that, once understood, you won't be able to explain)</h4>
           </section>
 
