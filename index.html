@@ -1476,7 +1476,8 @@
             <h4>Monads to the rescue</h4>
 
             <p class="fragment">Much like the Functor, the Monad has a utility method for applying an <em>operator function</em> to it's wrapped value</p>
-            <p class="fragment">but unlike the Functors <em><code>map()</code></em> utility, it does <em>not</em> return a new Monad.</p>
+            <p class="fragment">But unlike the Functors <em><code>map()</code></em> utility, it does <em>not</em> wrap the output value in a new monad</p>
+            <p class="fragment">Because it expects the value to be <em>already wrapped</em> in a monad</p>
             <p class="fragment">This utility function has many names: <code>bind()</code>, <code>chain()</code> and <em><code>flatMap()</code></em></p>
           </section>
 
