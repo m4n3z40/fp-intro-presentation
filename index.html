@@ -26,8 +26,8 @@
       <div class="slides">
         <section>
           <img src="img/lambda.png" alt="Lambda letter" style="border-radius: 100%;">
-          <h2>Introduction to FP</h1>
-          <h4>(w/ Javascript)</h2>
+          <h2>Introduction to FP</h2>
+          <h4>(w/ Javascript)</h4>
         </section>
 
         <section>
@@ -72,7 +72,7 @@
 
         <section>
           <h3>Readability Curve</h3>
-          <p>But the journey has it's bumps</p>
+          <p>But the journey has its bumps</p>
           <div class="fragment">
             <img src="img/readability-curve.png" alt="">
             <p><small>Source: <a href="https://github.com/getify/Functional-Light-JS/blob/master/ch1.md">https://github.com/getify/Functional-Light-JS/blob/master/ch1.md</a></small></p>
@@ -234,7 +234,7 @@
               const highOrderSecret = (fnArg) => {
                 const secret = 'FP rulez!';
 
-                fnArg(fnArg);
+                fnArg(secret);
               };
 
               const logSecret = (secret) => console.log(secret);
@@ -250,7 +250,7 @@
           </section>
 
           <section>
-            <h3>2. Returns a function as it's result</h3>
+            <h3>2. Returns a function as its result</h3>
 
             <pre class="fragment"><code class="javascript" data-trim>
               const makeSecret = () => {
@@ -283,7 +283,7 @@
                 const secret = 'FP rulez';
                 // following will log undefined because parent a scope
                 // does not have access to child scopes
-                console.log(secretSuffix); // undefined
+                console.log(secretSuffix); // ReferenceError: secretSuffix is not defined
 
                 return () => {
                   // scope 1
@@ -293,10 +293,10 @@
                 };
               };
 
-              console.log(secret); // undefined - we're in global scope here
+              console.log(secret); // ReferenceError: secret is not defined
 
               const getSecret = makeSecret();
-              // It remembers it's own scope plus parent scopes
+              // It remembers its own scope plus parent scopes
               console.log(getSecret()); // FP rulez!!!!!
             </code></pre>
           </section>
@@ -432,7 +432,7 @@
 
           <section>
             <h4>Arity</h4>
-            <p>The number of parameters a function expects in it's signature is called <em>arity</em></p>
+            <p>The number of parameters a function expects in its signature is called <em>arity</em></p>
 
             <pre class="fragment"><code class="javascript" data-trim>
               const double = n => n * 2; // arity = 1 (unary)
@@ -460,7 +460,7 @@
 
           <section>
             <h4>Forcing Unary Functions</h4>
-            <p class="fragment">Sometimes we need to ensure a function that expects more the one parameter to receive only one argument</p>
+            <p class="fragment">Sometimes we need to ensure a function that expects more than one parameter to receive only one argument</p>
 
             <pre class="fragment"><code class="javascript" data-trim>
               const strArr = ['1', '2', '3', '4', '5'];
@@ -557,7 +557,7 @@
                 const fullName = (preferedTreatment, firstName, lastName) =>
                   `${preferedTreatment} ${lastName}, ${firstName}`;
 
-                const kirk = partial(fullName, 'James', 'Kirk');
+                const kirk = partialRight(fullName, 'James', 'Kirk');
 
                 kirk('Sir'); // Sir Kirk, James
                 kirk('Captain'); // Captain Kirk, James
@@ -568,9 +568,9 @@
           <section>
             <h4>Currying</h4>
 
-            <p class="fragment">It's creating a function that only executes it's actual logic once it's <em>gathered all parameters</em> it expects</p>
+            <p class="fragment">It's creating a function that only executes its actual logic once it has <em>gathered all parameters</em> it expects</p>
 
-            <p class="fragment">When a <em>curried function</em> is applied to less arguments than it's <em>arity</em> it returns another function</p>
+            <p class="fragment">When a <em>curried function</em> is applied to less arguments than its <em>arity</em> it returns another function</p>
 
             <p class="fragment">And it <em>keeps</em> returning another function until all arguments are provided</p>
           </section>
@@ -941,7 +941,7 @@
           </section>
 
           <section>
-            <p>Note that these patterns are much <em>less performant</em> than it's mutable counterpart</p>
+            <p>Note that these patterns are much <em>less performant</em> than its mutable counterpart</p>
             <p class="fragment">Even more if we're dealing with <em>deep nested objects</em></p>
             <p class="fragment">If you need immutability as well as performance maybe <em>it's time to bring a library in</em></p>
           </section>
@@ -1012,7 +1012,7 @@
             <ul>
               <li class="fragment">Traversal logic is abstracted</li>
               <li class="fragment">Terser, more readable and <em>declarative code</em></li>
-              <li class="fragment"><em>Functions</em> and all it's goodness!</li>
+              <li class="fragment"><em>Functions</em> and all its goodness!</li>
             </ul>
 
             <p>&nbsp;</p>
@@ -1051,7 +1051,7 @@
           <section>
             <h4>A word about the feared <em>Functor</em></h4>
 
-            <p class="fragment">In FP terminology, a Functor is a <em>wrapper object</em> that has a utility method for applying an <em>operator function</em> to it's wrapped value</p>
+            <p class="fragment">In FP terminology, a Functor is a <em>wrapper object</em> that has a utility method for applying an <em>operator function</em> to its wrapped value</p>
             <p class="fragment">returning a <em>new Functor</em> wrapping the new value produced by the operator</p>
             <p class="fragment">If the wrapped value is <em>compound</em> the Functor applies the operator to each indidual value instead</p>
             <p class="fragment">All this is just a fancy way of saying that Functor is just an object that has a <em>map</em> method</p>
@@ -1143,7 +1143,7 @@
           <section>
             <h4>Declarative iterations</h4>
 
-            <p>Although it may be <em>less performant</em>, expressing repetition with recursion is usually more readable because of it's <em>declarative</em> nature</p>
+            <p>Although it may be <em>less performant</em>, expressing repetition with recursion is usually more readable because of its <em>declarative</em> nature</p>
 
             <pre class="fragment"><code class="javascript" data-trim>
               const sum = (...values) => {
@@ -1475,7 +1475,7 @@
           <section>
             <h4>Monads to the rescue</h4>
 
-            <p class="fragment">Much like the Functor, the Monad has a utility method for applying an <em>operator function</em> to it's wrapped value</p>
+            <p class="fragment">Much like the Functor, the Monad has a utility method for applying an <em>operator function</em> to its wrapped value</p>
             <p class="fragment">But unlike the Functors <em><code>map()</code></em> utility, it does <em>not</em> wrap the output value in a new monad</p>
             <p class="fragment">Because it expects the value to be <em>already wrapped</em> in a monad</p>
             <p class="fragment">This utility function has many names: <code>bind()</code>, <code>chain()</code> and <em><code>flatMap()</code></em></p>
