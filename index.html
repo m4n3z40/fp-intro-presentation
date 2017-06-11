@@ -469,7 +469,7 @@
               console.log(numArr); // [1, NaN, NaN, NaN, NaN]
             </code></pre>
 
-            <p class="fragment">That happens because parseInt's signature is:<br><code>parseInt(str, radix = 10)</code></p>
+            <p class="fragment">That happens because parseInt's signature is:<br><code>parseInt(str [, radix])</code></p>
             <p class="fragment">And <code>Array.prototype.map</code> calls any function passed in with the arguments:<br><code>fn(item, index, arr)</code></p>
           </section>
 
@@ -1324,8 +1324,8 @@
 
             <ul>
               <li class="fragment">Abstract Algebra</li>
-              <li class="fragment">Type Theory</li>
               <li class="fragment">Category Theory</li>
+              <li class="fragment">Type Theory</li>
             </ul>
 
             <p class="fragment">Some people say these fundamental topics are <em>mandatory</em> to start FPing</p>
