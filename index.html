@@ -1400,8 +1400,20 @@
 
             <p class="fragment">
               It's the same exact code, but nothing happens. Not even an <em>exception</em>!
-              <br>
-              This allows easier and safer <em>handling of errors</em> without sacrificing readability
+            </p>
+          </section>
+
+          <section>
+            <h4>Revisiting Functors</h4>
+
+            <p>Maybe?</p>
+
+            <p class="fragment">
+              When we use the <em>Something</em> and <em>Nothing</em> Functors together in a function like this, we're actually implementing the <em>Maybe</em> Functor.
+            </p>
+
+            <p class="fragment">
+              It allows easier and <em>safer</em> null/empty checks without sacrificing readability.
             </p>
           </section>
 
@@ -1411,14 +1423,14 @@
             <p>handling branches/errors</p>
 
             <pre class="fragment"><code class="javascript" data-trim>
-              const something = (value) => ({
+              const success = (value) => ({
                 map: fn => something(fn(value)),
-                orError: nothing
+                catch: nothing
               });
 
-              const nothing = () => ({
-                map: nothing,
-                orError: something
+              const error = (e) => ({
+                map: () => error(e),
+                catch: fn => something(fn(e))
               });
             </code></pre>
           </section>
@@ -1432,7 +1444,7 @@
               const getUser = userId => {
                 const user = repository.findUserById(userId);
 
-                return user ? something(user) : nothing();
+                return user ? success(user) : error(new Error('User not found'));
               }
 
               // now we can write 
@@ -1441,12 +1453,26 @@
                 .map(attachPermissions(permissions))
                 .map(attachOrders(orders))
                 .map(showProfile(profileTemplate))
-                // error branch executed when is nothing
-                .orError(new Error('User not found'))
-                .map(showError(errorTemplate));
+                // error branch executed when is error
+                .catch(showError(errorTemplate));
             </code></pre>
           </section>
 
+          <section>
+            <h4>Revisiting Functors</h4>
+
+            <p>Either?</p>
+
+            <p class="fragment">
+              When we use the <em>Error</em> and <em>Success</em> together in a function like this, we're actually implementing the <em>Either</em> Functor. 
+              <br>
+              Its <em>strict</em> implementation is more complex, but the <em>core concept</em> is the same.
+            </p>
+            <p class="fragment"><small>
+              In the strict implementation of the Either Functor, the Error and Success Functors are often called <em>Left</em> and <em>Right</em> respectively.
+            </small></p>
+          </section>  
+          
           <section>
             <h4>Revisiting Functors</h4>
 
@@ -1463,12 +1489,11 @@
                   something(user.setOrders(orders)) :
                   nothing();
 
-              getUser(userId)
-                .map(attachPermissions(permissions))// something(something(user))
+              getUser(nonExistantId)
+                .map(attachPermissions(permissions)) // something(something(user))
                 .map(attachOrders(orders))// Error: setOrders is not a function
                 .map(showProfile(profileTemplate))
-                .orError(new Error('User not found'))
-                .map(showError(errorTemplate));
+                .catch(showError(errorTemplate));
             </code></pre>
           </section>
 
@@ -1489,14 +1514,32 @@
             <pre class="fragment"><code class="javascript" data-trim>
               const something = (value) => ({
                 map: fn => something(fn(value)),
-                flatMap: fn => fn(value),
-                orError: nothing
+                flatMap: fn => fn(value)
               });
 
               const nothing = () => ({
                 map: nothing,
-                flatMap: nothing,
-                orError: something
+                flatMap: nothing
+              });
+            </code></pre>
+          </section>
+
+          <section>
+            <h4>Monads to the rescue</h4>
+
+            <p>Unboxing a box</p>
+
+            <pre class="fragment"><code class="javascript" data-trim>
+              const success = (value) => ({
+                map: fn => something(fn(value)),
+                flatMap: fn => fn(value)
+                catch: nothing
+              });
+
+              const error = (e) => ({
+                map: () => error(e),
+                flatMap: () => error(e),
+                catch: fn => something(fn(e))
               });
             </code></pre>
           </section>
@@ -1517,12 +1560,11 @@
                   something(user.setOrders(orders)) :
                   nothing();
 
-              getUser(userId)
-                .flatMap(attachPermissions(permissions)) // something(user)
-                .flatMap(attachOrders(orders)) // // something(user)
+              getUser(nonExistantId)
+                .flatMap(attachPermissions(permissions))// something(user)
+                .flatMap(attachOrders(orders))// something(user)
                 .map(showProfile(profileTemplate))
-                .orError(new Error('User not found'))
-                .map(showError(errorTemplate));
+                .catch(showError(errorTemplate));
             </code></pre>
           </section>
 
